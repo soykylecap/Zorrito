@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+
+{% load static %}
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>Tercera Pre Entrega de Kyle</title>
+        <!-- Favicon-->
+        <link rel="icon" type="image/x-icon" href="{% static 'AppZorro/assets/favicon.ico' %}" />
+        <!-- Bootstrap icons-->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet" />
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <link href="{% static 'AppZorro/css/styles.css' %}" rel="stylesheet" />
+    </head>
+    <body>
+        <!-- Responsive navbar-->
+
+        <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+            <div class="container px-lg-5">
+                <a class="navbar-brand" href="#!">AppZorro</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+                
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                        <li class="nav-item"><a class="nav-link" href="{% url 'Inicio' %}">Inicio</a></li>
+
+
+                        {% if request.user.is_authenticated %}
+
+
+                                <li class="nav-item"><p class="nav-link">{{ request.user.username }}</p></li>
+
+                                <li class="nav-item"><a class="nav-link" href="{% url 'Edit' %}">Editar usuario</a></li>
+                                <li class="nav-item"><a class="nav-link" href="{% url 'LogoutZorro' %}">Salir</a></li>
+                                <li class="nav-item">
+                                    
+                                    
+                                    <form class="nav-link" method="post" action="{% url 'LogoutZorro' %}">
+                                        {% csrf_token %}
+                                        <input type="submit" value="Cerrar sesión">
+                                    </form>
+
+                                
+                                
+                                
+                                
+                                </li>
+
+
+
+                        {% else %}
+
+                                <li class="nav-item"><a class="nav-link" href="{% url 'Register' %}">Registrarse</a></li>
+                                <li class="nav-item"><a class="nav-link" href="{% url 'Login' %}">Login</a></li>
+
+                        {% endif %}
+
+
+
+
+
+
+
+
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <!-- Header-->
+        <header class="py-5">
+            <div class="container px-lg-5">
+                <div class="p-4 p-lg-5 bg-light rounded-3 text-center">
+                    <div class="m-4 m-lg-5">
+                        <h1 class="display-5 fw-bold">Zorrito</h1>
+                        <p class="fs-4">Control de caja</p>
+                </div>
+            </div>
+        </header>
+
+        {% block main %}
+
+        {% endblock main %}
+
+        <!-- Footer-->
+        <footer class="py-5 bg-dark">
+            <div class="container"><p class="m-0 text-center text-white">Copyright &copy; AppZorro2024</p></div>
+        </footer>
+    </body>
+</html>
