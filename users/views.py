@@ -53,7 +53,7 @@ def register(request):
 
 
 # Vista de editar el perfil
-# Obligamos a loguearse para editar los datos del usuario activo
+# Obligamos a loguearse para editar los datos del usuario
 @login_required
 def edit(request):
 
@@ -64,35 +64,41 @@ def edit(request):
 
     if request.method == 'POST':
 
-        miFormulario = UserEditForm(request.POST)
+        miFormulario = UserEditForm(request.POST, request.FILES)
 
         if miFormulario.is_valid():
 
             informacion = miFormulario.cleaned_data
 
-            # Datos que se modificarán
+            datos = {
+                    'email': usuario.email,
+                    'imagen': usuario.imagen
+                }
+            miFormulario = UserEditForm(initial=datos)
+
             usuario.email = informacion['email']
-            usuario.password1 = informacion['password1']
-            usuario.password2 = informacion['password1']
             usuario.save()
 
-            # Retornamos al inicio una vez guardado los datos
+
+            # Creamos nueva imagen en la tabla
+            try:
+                avatar = Imagen.objects.get(user=usuario)
+            except Imagen.DoesNotExist:
+                avatar = Imagen(user=usuario, imagen=informacion["imagen"])
+                avatar.save()
+            else:
+                avatar.imagen = informacion["imagen"]
+                avatar.save()
+
             return render(request, "AppZorro/index.html")
 
     else:
-        # Cuando el método es GET, podemos mostrar el formulario
-        # con datos pre-cargados porque los conocemos del mismo usuario
         datos = {
             'first_name': usuario.first_name,
             'email': usuario.email
         }
         miFormulario = UserEditForm(initial=datos)
 
-    return render(
-        request,
-        "users/edit.html",
-        {
-            "mi_form": miFormulario,
-            "usuario": usuario
-        }
-    )
+    return render(request, "users/edit.html", {"mi_form": miFormulario, "usuario": usuario})
+
+

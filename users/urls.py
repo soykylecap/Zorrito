@@ -8,4 +8,5 @@ urlpatterns = [
     path('register/', views.register, name="Register"),
     path('edit/', views.edit, name="Edit"),
     path('logout/', LogoutView.as_view(template_name='AppZorro/index.html'), name="LogoutZorro"),
+#    path('agregar_avatar/', views.agregar_avatar, name="AgregarAvatar"),
 ]

@@ -2,13 +2,13 @@
 
 {% load static %}
 
-<html lang="en">
+<html lang="es">
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>Tercera Pre Entrega de Kyle</title>
+        <title>{% block title %} {% endblock title %}</title>
         <!-- Favicon-->
         <link rel="icon" type="image/x-icon" href="{% static 'AppZorro/assets/favicon.ico' %}" />
         <!-- Bootstrap icons-->
@@ -19,64 +19,53 @@
     <body>
         <!-- Responsive navbar-->
 
-        <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+
+        <nav class="navbar navbar-expand-lg navbar-dark bg-secondary">
             <div class="container px-lg-5">
-                <a class="navbar-brand" href="#!">AppZorro</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+                <a class="navbar-brand" href="{% url 'Inicio' %}">Zorrito</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+                </button>
                 
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                        <li class="nav-item"><a class="nav-link" href="{% url 'Inicio' %}">Inicio</a></li>
+                <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                <ul class="navbar-nav">
+                    <li class="nav-item"><a class="nav-link" href="#">Pesos</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Dolares</a></li>
 
+                    {% if request.user.is_authenticated %}
+                        <img src="{{request.user.imagen.imagen.url}}" alt="" height="40px">
+                        <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ request.user.username }}</a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <a class="dropdown-item" href="{% url 'Edit' %}">Mis datos</a>
+                            <a class="dropdown-item" href="{% url 'LogoutZorro' %}">Salir</a>
+                            <form class="dropdown-item" method="post" action="{% url 'LogoutZorro' %}">{% csrf_token %}<input type="submit" value="Salir"></form>
+                        </div>
+                        </li>
+                    {% else %}
+                        <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Acceder</a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <a class="dropdown-item" href="{% url 'Login' %}">Login</a>
+                            <a class="dropdown-item" href="{% url 'Register' %}">Registrarse</a>
+                        </div>
+                        </li>
+                    {% endif %}
 
-                        {% if request.user.is_authenticated %}
-
-
-                                <li class="nav-item"><p class="nav-link">{{ request.user.username }}</p></li>
-
-                                <li class="nav-item"><a class="nav-link" href="{% url 'Edit' %}">Editar usuario</a></li>
-                                <li class="nav-item"><a class="nav-link" href="{% url 'LogoutZorro' %}">Salir</a></li>
-                                <li class="nav-item">
-                                    
-                                    
-                                    <form class="nav-link" method="post" action="{% url 'LogoutZorro' %}">
-                                        {% csrf_token %}
-                                        <input type="submit" value="Cerrar sesión">
-                                    </form>
-
-                                
-                                
-                                
-                                
-                                </li>
-
-
-
-                        {% else %}
-
-                                <li class="nav-item"><a class="nav-link" href="{% url 'Register' %}">Registrarse</a></li>
-                                <li class="nav-item"><a class="nav-link" href="{% url 'Login' %}">Login</a></li>
-
-                        {% endif %}
-
-
-
-
-
-
-
-
-                    </ul>
+                </ul>
                 </div>
             </div>
         </nav>
+
+
+
         <!-- Header-->
         <header class="py-5">
             <div class="container px-lg-5">
                 <div class="p-4 p-lg-5 bg-light rounded-3 text-center">
                     <div class="m-4 m-lg-5">
                         <h1 class="display-5 fw-bold">Zorrito</h1>
-                        <p class="fs-4">Control de caja</p>
+                        <p class="fs-4">{% block subtitulo %}   {% endblock subtitulo %}</p>
                 </div>
             </div>
         </header>
@@ -89,5 +78,11 @@
         <footer class="py-5 bg-dark">
             <div class="container"><p class="m-0 text-center text-white">Copyright &copy; AppZorro2024</p></div>
         </footer>
+        <!-- JS Bootstrap v5.2 -->
+        <script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8"
+        crossorigin="anonymous"
+        ></script>
     </body>
 </html>

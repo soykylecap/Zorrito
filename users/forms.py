@@ -20,13 +20,12 @@ class UserRegisterForm(UserCreationForm):
 
 
 class UserEditForm(UserCreationForm):
-
-    # Obligatorios
+    password1 = None
+    password2 = None
     email = forms.EmailField(label="Ingrese su email:")
-    password1 = forms.CharField(label='Contraseña', widget=forms.PasswordInput)
-    password2 = forms.CharField(label='Repetir la contraseña', widget=forms.PasswordInput)
+    imagen = forms.ImageField(label="Imagen", required=False)
 
     class Meta:
         model = User
-        fields = ['email', 'password1', 'password2']
+        fields = ['email', 'imagen']
         help_texts = {k:"" for k in fields}
