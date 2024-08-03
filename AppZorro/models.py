@@ -23,7 +23,7 @@ class CajaDolares(models.Model):
     ingreso = models.FloatField()
     egreso = models.FloatField()
     subcaja = models.CharField(max_length=7, choices=[('CD','Cuenta Diego'),('CK','Cuenta Kyle')])
-    autor = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+ #   autor = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     action_time = models.DateTimeField(auto_now=True)
 
 class CajaPesos(models.Model):
@@ -34,7 +34,7 @@ class CajaPesos(models.Model):
     ingreso = models.FloatField()
     egreso = models.FloatField()
     subcaja = models.ForeignKey(SubCajas, on_delete=models.CASCADE)
-    autor = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+#    autor = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     action_time = models.DateTimeField(auto_now=True)
     
     

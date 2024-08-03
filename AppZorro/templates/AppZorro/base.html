@@ -20,39 +20,37 @@
         <!-- Responsive navbar-->
 
 
-        <nav class="navbar navbar-expand-lg navbar-dark bg-secondary">
+
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <div class="container px-lg-5">
-                <a class="navbar-brand" href="{% url 'Inicio' %}">Zorrito</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-                </button>
+
+                <a class="navbar-brand" href="{% url 'Inicio' %}">
+                <img src="\media\logo.png" alt="" height="60px">
+                </a>    
                 
-                <div class="collapse navbar-collapse" id="navbarNavDropdown">
-                <ul class="navbar-nav">
-                    <li class="nav-item"><a class="nav-link" href="#">Pesos</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">Dolares</a></li>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    
+                    
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="{% url 'Inicio' %}">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#!">About</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#!">Contact</a></li>
 
-                    {% if request.user.is_authenticated %}
-                        <img src="{{request.user.imagen.imagen.url}}" alt="" height="40px">
-                        <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ request.user.username }}</a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                            <a class="dropdown-item" href="{% url 'Edit' %}">Mis datos</a>
-                            <a class="dropdown-item" href="{% url 'LogoutZorro' %}">Salir</a>
-                            <form class="dropdown-item" method="post" action="{% url 'LogoutZorro' %}">{% csrf_token %}<input type="submit" value="Salir"></form>
-                        </div>
-                        </li>
-                    {% else %}
-                        <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Acceder</a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                            <a class="dropdown-item" href="{% url 'Login' %}">Login</a>
-                            <a class="dropdown-item" href="{% url 'Register' %}">Registrarse</a>
-                        </div>
-                        </li>
-                    {% endif %}
 
-                </ul>
+                        {% if request.user.is_authenticated %}
+                            <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ request.user.username }}</a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                <a class="dropdown-item" href="{% url 'Edit' %}">Mis datos</a>
+                                <a class="dropdown-item" href="{% url 'LogoutZorro' %}">Salir</a>
+                            </div>
+                            </li>
+                            <img src="{{request.user.imagen.imagen.url}}" alt="" class="rounded-circle" height="40px">
+                        {% else %}
+                        <li class="nav-item"><a class="nav-link" href="{% url 'Login' %}">Acceder</a></li>
+                        {% endif %}
+                    </ul>
                 </div>
             </div>
         </nav>
@@ -60,14 +58,8 @@
 
 
         <!-- Header-->
-        <header class="py-5">
-            <div class="container px-lg-5">
-                <div class="p-4 p-lg-5 bg-light rounded-3 text-center">
-                    <div class="m-4 m-lg-5">
-                        <h1 class="display-5 fw-bold">Zorrito</h1>
-                        <p class="fs-4">{% block subtitulo %}   {% endblock subtitulo %}</p>
-                </div>
-            </div>
+        <header class="py-1">
+
         </header>
 
         {% block main %}
@@ -75,9 +67,11 @@
         {% endblock main %}
 
         <!-- Footer-->
-        <footer class="py-5 bg-dark">
-            <div class="container"><p class="m-0 text-center text-white">Copyright &copy; AppZorro2024</p></div>
-        </footer>
+        <div class="fixed-bottom">
+            <footer class="py-1 bg-secondary">
+                <div class="container"><p class="m-1 text-center text-white">Copyright &copy; AppZorro2024</p></div>
+            </footer>
+        </div>
         <!-- JS Bootstrap v5.2 -->
         <script
         src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"

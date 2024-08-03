@@ -1,6 +1,7 @@
 from django.shortcuts import render
 
 from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.models import User
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import login_required
 from users.forms import UserEditForm, UserRegisterForm
@@ -18,7 +19,7 @@ def login_request(request):
             usuario = form.cleaned_data.get('username')
             contrasenia = form.cleaned_data.get('password')
 
-            user = authenticate(username= usuario, password=contrasenia)
+            user = authenticate(username=usuario, password=contrasenia)
 
             if user is not None:
                 login(request, user)
@@ -38,12 +39,14 @@ def register(request):
 
         form = UserRegisterForm(request.POST)
         if form.is_valid():
-            # Si los datos ingresados en el form son válidos, con form.save()
-            # creamos un nuevo user usando esos datos
             form.save()
+            usuario_del_form = form.cleaned_data
+            usuario1 = User.objects.get(username__iexact=usuario_del_form['username'])
+            avatar = Imagen(user=usuario1, imagen="/avatares/avatar_defecto.png")
+            avatar.save()
             return render(request,"AppZorro/index.html")
         else:
-            msg_register = "Error en los datos ingresados"
+            msg_register = "Error en los datos"
             msg_register += f" | {form.errors}"
 
     form = UserRegisterForm()     
@@ -71,8 +74,8 @@ def edit(request):
             informacion = miFormulario.cleaned_data
 
             datos = {
+                    'username':usuario.username,
                     'email': usuario.email,
-                    'imagen': usuario.imagen
                 }
             miFormulario = UserEditForm(initial=datos)
 
@@ -94,7 +97,7 @@ def edit(request):
 
     else:
         datos = {
-            'first_name': usuario.first_name,
+            'first_name': usuario.username,
             'email': usuario.email
         }
         miFormulario = UserEditForm(initial=datos)
