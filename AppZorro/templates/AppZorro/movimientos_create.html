@@ -1,0 +1,151 @@
+{% extends 'AppZorro/base.html' %}
+
+{% load static %}
+
+{% block title %}El Zorrito | Caja {% endblock title %}
+
+{% block subtitulo %}  Movimientos de caja {% endblock subtitulo %}
+
+{% block main %}
+
+
+<div id="todo" class="row d-flex justify-content-center align-items-center h-100">
+    <div class="col-xl-5">
+        <div class="card rounded-3 text-black">
+            <div class="card-body p-md-5 mx-md-4">
+                
+                <div class="text-center">
+                    <h2 class="mt-1 mb-3 pb-1">Nuevo movimiento de caja</h2>
+
+
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon1">Fecha</span>
+                        <input type="text" class="form-control"  aria-describedby="basic-addon1" {{ form.fecha }}
+                      </div>
+                      
+                      <div class="input-group mb-3">
+                        <input type="text" class="form-control" placeholder="Descripción del movimiento" {{ form.detalle }} 
+                        <span class="input-group-text" id="basic-addon2">Detalle</span>
+                      </div>
+                      
+                      <div class="mb-3">
+                        
+                        <div class="input-group">
+                            <span class="input-group-text mb-3" >Seleccione el rubro</span>
+                            <select class="form-select form-select-md mb-3" aria-label="Large select example">
+                                <option selected {{ form.rubro }}</option>
+                            </select>
+                            
+                        </div>
+                        <div class="form-text" id="basic-addon4">Example help text goes outside the input group.</div>
+                      </div>
+                      
+                      <div class="input-group mb-3">
+                        <span class="input-group-text">$</span>
+                        <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)">
+                      </div>
+                      
+                      <div class="input-group mb-3">
+                        <input type="text" class="form-control" placeholder="Username" aria-label="Username">
+                        <span class="input-group-text">@</span>
+                        <input type="text" class="form-control" placeholder="Server" aria-label="Server">
+                      </div>
+                      
+                      <div class="input-group">
+                        <span class="input-group-text">With textarea</span>
+                        <textarea class="form-control" aria-label="With textarea"></textarea>
+                      </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    <table class="table">
+
+                        <div data-mdb-input-init class="form-outline mb-4">
+                            {% csrf_token %}
+                            {{ form.as_table }}
+                            <input class="btn btn-secondary btn-me" type="submit" value="Crear usuario">
+                        </div>
+
+                    </table>
+
+                    <table class="table">
+                        <tbody>
+                          <tr>
+                            <th scope="row">Fecha</th>
+                            <td>{{ form.fecha }}</td>
+                          </tr>
+                          <tr>
+                            <th scope="row">Rubro</th>
+                            <td>{{ form.rubro }}</td>
+                          </tr>
+                          <tr>
+                            <th scope="row">Detalle</th>
+                            <td>{{ form.detalle }}</td>
+                          </tr>
+                          <tr>
+                            <th scope="row">Comprobante</th>
+                            <td>{{ form.comprobante }}</td>
+                          </tr>
+                          <tr>
+                            <th scope="row"></th>
+                            <th>Ingreso</th>
+                            <th>Egreso</th>
+                          </tr>
+                          <tr>
+                            <th scope="row">Importe</th>
+                            <td>{{ form.ingreso }}</td>
+                            <td>{{ form.egreso }}</td>
+                          </tr>
+
+
+                      <div class="d-flex align-items-center justify-content-center pb-4">
+                        <a type="button"  class="btn btn-secondary btn-me" href="{% url 'Movimientos' %}">Volver al listado</a>
+                        <div class="col-xl-1"></div>
+                        <a type="button" class="btn btn-outline-danger" href="">Editar Movimiento</a>
+                      </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+
+<script>
+    function mostrarImagen() {
+        var modal = document.getElementById("miModal");
+        modal.style.display = "block";
+        modal.onclick = function() {
+            modal.style.display = "none";
+        }
+    }
+</script>
+
+{% endblock main %}
+
+

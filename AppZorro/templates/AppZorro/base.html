@@ -34,15 +34,21 @@
                     
                     <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                         <li class="nav-item"><a class="nav-link active" aria-current="page" href="{% url 'Inicio' %}">Home</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#!">About</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#!">Contact</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'Movimientos' %}">Caja</a></li>   
+                        <li class="nav-item"><a class="nav-link" href="{% url 'About' %}">Acerca de mi</a></li>
+
 
 
                         {% if request.user.is_authenticated %}
+
+                            
                             <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ request.user.username }}</a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                                 <a class="dropdown-item" href="{% url 'Edit' %}">Mis datos</a>
+                                {% if request.user.is_staff == True %}
+                                    <a class="dropdown-item" href="/admin/" target="_blank">Administrador</a>
+                                {% endif %}
                                 <a class="dropdown-item" href="{% url 'LogoutZorro' %}">Salir</a>
                             </div>
                             </li>
@@ -73,10 +79,6 @@
             </footer>
         </div>
         <!-- JS Bootstrap v5.2 -->
-        <script
-        src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8"
-        crossorigin="anonymous"
-        ></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     </body>
 </html>
