@@ -1,4 +1,4 @@
-AppZorro/__pycache__/
+__pycache__/
 *.pyc
 
 Pipfile
