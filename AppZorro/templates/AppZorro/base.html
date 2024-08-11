@@ -18,30 +18,22 @@
     </head>
     <body>
         <!-- Responsive navbar-->
-
-
-
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <div class="container px-lg-5">
+                {% if request.user.is_authenticated %}
+                    <a class="navbar-brand" href="{% url 'Movimientos' %}"><img src="\media\logo.png" alt="" height="60px"></a>    
+                {% else %}
+                    <a class="navbar-brand" href="{% url 'Inicio' %}"><img src="\media\logo.png" alt="" height="60px"></a>
+                {% endif %}
 
-                <a class="navbar-brand" href="{% url 'Inicio' %}">
-                <img src="\media\logo.png" alt="" height="60px">
-                </a>    
-                
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    
-                    
                     <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="{% url 'Inicio' %}">Home</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{% url 'Movimientos' %}">Caja</a></li>   
+                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="{% url 'Inicio' %}">Home</a></li> 
+                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="{% url 'Movimientos' %}">Caja</a></li>  
+                        <li class="nav-item"><a class="nav-link active" aria-current="page" href="{% url 'Movimientos' %}">Rubros</a></li> 
                         <li class="nav-item"><a class="nav-link" href="{% url 'About' %}">Acerca de mi</a></li>
-
-
-
                         {% if request.user.is_authenticated %}
-
-                            
                             <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ request.user.username }}</a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">

@@ -17,11 +17,11 @@ class Comprobantes(models.Model):
 
 class CajaPesos(models.Model):
     fecha = models.DateField(default=date.today)
-    rubro = models.ForeignKey(Rubros, default=5, on_delete=models.CASCADE)
+    rubro = models.ForeignKey(Rubros, on_delete=models.CASCADE)
     detalle = models.CharField(max_length=60)
     ingreso = models.FloatField(default=0)
     egreso = models.FloatField(default=0)
-    comprobante = models.OneToOneField(Comprobantes, on_delete=models.CASCADE, null=True, blank = True)
+    comprobante = models.ImageField(upload_to='comprobantes', null=True, blank = True)
     autor = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, blank = True)
     action_time = models.DateTimeField(auto_now=True)
 
