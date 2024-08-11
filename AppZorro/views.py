@@ -1,3 +1,4 @@
+from django.http import HttpRequest, HttpResponse
 from django.views.generic import TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import ListView, DetailView, CreateView
@@ -36,10 +37,11 @@ class MovimientosDetailView(LoginRequiredMixin, DetailView):
 
 class MovimientosCreateView(LoginRequiredMixin, CreateView):
     model = CajaPesos
-    fields = ['fecha', 'rubro', 'detalle', 'ingreso', 'egreso', 'comprobante']
+    fields = ['fecha', 'detalle', 'rubro', 'ingreso', 'egreso', 'comprobante']
     template_name = "AppZorro/movimientos_create.html"
     success_url = reverse_lazy("Movimientos")
     
     def form_valid(self, form):
         form.instance.autor = self.request.user
         return super().form_valid(form)
+
