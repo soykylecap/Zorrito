@@ -7,18 +7,59 @@
 {% block subtitulo %}   {% endblock subtitulo %}
 
 {% block main %}
-<h1 class="display-1">Inicio 1</h1>
-
-<div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-    <div class="toast-header">
-      <img src="..." class="rounded me-2" alt="...">
-      <strong class="me-auto">Bootstrap</strong>
-      <small class="text-body-secondary">11 mins ago</small>
-      <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-    </div>
-    <div class="toast-body">
-      Hello, world! This is a toast message.
-    </div>
-  </div>
+        <!-- Header-->
+        <header class="py-5">
+          <div class="container px-lg-5">
+              <div class="p-4 p-lg-4 bg-light rounded-3 text-center">
+                  <div class="m-4 m-lg-5">
+                      <img class
+                      <img src="{% static 'AppZorro/assets/img/logo.png' %}" alt="" height="100px">
+                      <h1 class="display-5 fw-bold">El Zorrito te cuida las cuentas</h1>
+                      <p class="fs-5">Una aplicación simple para controlar los ingresos y los gastos de tu obra.</p>
+                      {% if request.user.is_authenticated %}
+                        <p class="fs-5">Estas listo para empezar a trabajar.</p>
+                      {% else %}
+                        <a class="btn btn-dark btn-lg" href="{% url 'Movimientos' %}">Acceder</a>
+                      {% endif %}
+                  </div>
+              </div>
+          </div>
+      </header>
+        <!-- Page Content-->
+        <section class="pt-4">
+          <div class="container px-lg-5">
+              <!-- Page Features-->
+              <div class="row gx-lg-5">
+                  <div class="col-lg-6 col-xxl-4 mb-5">
+                      <div class="card bg-light border-0 h-100">
+                          <div class="card-body text-center p-4 p-lg-5 pt-0 pt-lg-0">
+                              <div class="feature bg-success bg-gradient text-white rounded-3 mb-4 mt-n4"><i class="bi bi-wallet2"></i></div>
+                              <h2 class="fs-4 fw-bold">Caja en Pesos</h2>
+                              <p class="mb-0">Registrá cada movimiento de tu caja para tener siempre tus datos actualizados</p>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="col-lg-6 col-xxl-4 mb-5">
+                      <div class="card bg-light border-0 h-100">
+                          <div class="card-body text-center p-4 p-lg-5 pt-0 pt-lg-0">
+                              <div class="feature bg-info bg-gradient text-white rounded-3 mb-4 mt-n4"><i class="bi bi-card-list"></i></div>
+                              <h2 class="fs-4 fw-bold">Organizalo con Rubros</h2>
+                              <p class="mb-0">Creá las categorias que necesites para poder clasificar los movimientos de tu caja.</p>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="col-lg-6 col-xxl-4 mb-5">
+                      <div class="card bg-light border-0 h-100">
+                          <div class="card-body text-center p-4 p-lg-5 pt-0 pt-lg-0">
+                              <div class="feature bg-dark bg-gradient text-white rounded-3 mb-4 mt-n4"><i class="bi bi-people-fill"></i></div>
+                              <h2 class="fs-4 fw-bold">Trabajá en equipo</h2>
+                              <p class="mb-0">Todo el equipo puede loguerse para asentar los movimientos en pocos pasos</p>
+                          </div>
+                      </div>
+                  </div>
+                  
+              </div>
+          </div>
+      </section>
 
 {% endblock main %}
