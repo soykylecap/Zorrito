@@ -1,0 +1,36 @@
+{% extends 'AppZorro/base.html' %}
+
+{% load static %}
+
+{% block title %}El Zorrito | Caja {% endblock title %}
+
+{% block subtitulo %}  Movimientos de caja {% endblock subtitulo %}
+
+{% block main %}
+<div class="container py-1 h-50">
+    <div id="todo" class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-xl-5">
+            <div class="card rounded-3 text-black">
+                <div class="card-body p-md-5 mx-md-4">
+                    <div class="text-center">
+                        <h3 class="display-6 mb-3 pb-1">Eliminar rubro</h3>
+                        <form method="POST">
+                        {% csrf_token %}
+
+                        <h2 class="text-bg-info p-3 m-3">{{ object.titulo }}</h2>
+                        <h5>¿Estas seguro/a?</h5>
+                        <h6 class="p-1">Los movimientos de caja pertenecientes a este rubro quedaran desclasificados</h6>
+                        <input class="btn btn-outline-danger" type="submit" value="Eliminar">
+                        <a class="btn btn-info btn-me" href="{% url 'Rubros' %}">Volver</a>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock main %}
+
+

@@ -1,8 +1,9 @@
+from django.db.models.query import QuerySet
 from django.http import HttpRequest, HttpResponse
 from django.views.generic import TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import ListView, DetailView, CreateView, DeleteView, UpdateView
-from AppZorro.models import CajaPesos
+from AppZorro.models import CajaPesos, Rubros
 from django.urls import reverse_lazy
 from django.conf import settings
 
@@ -13,10 +14,12 @@ from django.conf import settings
 class Inicio(TemplateView):
     template_name = 'AppZorro/index.html'
 
-
 class About(TemplateView):
     template_name = 'AppZorro/about.html'
 
+
+
+#Vistas para CajaPesos
 
 class MovimientosListView(LoginRequiredMixin, ListView):
     model = CajaPesos
@@ -55,3 +58,25 @@ class MovimientosUpdateView(LoginRequiredMixin, UpdateView):
     success_url = reverse_lazy("Movimientos")
     fields = ['fecha', 'detalle', 'rubro', 'ingreso', 'egreso', 'comprobante']
     template_name = "AppZorro/CajaPesos_update.html"
+
+
+
+#Vistas para Rubros
+
+class RubrosListView(LoginRequiredMixin, ListView):
+    model = Rubros
+
+class RubrosCreateView(LoginRequiredMixin, CreateView):
+    model = Rubros
+    fields = ['titulo',]
+    success_url = reverse_lazy("Rubros")
+
+class RubrosDeleteView(LoginRequiredMixin, DeleteView):
+    model = Rubros
+    success_url = reverse_lazy("Rubros")
+
+class RubrosUpdateView(LoginRequiredMixin, UpdateView):
+    model = Rubros
+    success_url = reverse_lazy("Rubros")
+    fields = ['titulo',]
+    template_name = "AppZorro/Rubros_update.html"

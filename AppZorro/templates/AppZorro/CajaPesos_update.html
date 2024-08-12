@@ -13,32 +13,60 @@
     <div class="col-xl-5">
         <div class="card rounded-3 text-black">
             <div class="card-body p-md-5 mx-md-4">
-                <div class="text-center">
-                    <h2 class="mt-1 mb-3 pb-1">Modificar movimiento de caja</h2>
+                <h3 class="display-6">Editar movimiento</h3>
+
                     <form action="" method="POST" enctype="multipart/form-data">
-                      <p class="fs-5 fw-bold">{{ msg_register }}</p>
                       <div data-mdb-input-init class="form-outline mb-4">
                         {% csrf_token %}
                         <table class="table table-striped">
-                          {{ form.as_table }}
+                            <tbody>
+                                <tr>
+                                  <th scope="row">{{ form.fecha.label }}</th>
+                                  <td>{{ form.fecha }}</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">{{ form.detalle.label }}</th>
+                                    <td>{{ form.detalle }}</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">{{ form.rubro.label }}</th>
+                                    <td>{{ form.rubro }}</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">{{ form.ingreso.label }}</th>
+                                    <td>{{ form.ingreso }}</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">{{ form.egreso.label }}</th>
+                                    <td>{{ form.egreso }}</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">{{ form.comprobante.label }}</th>
+                                    <td>{{ form.comprobante }}</td>
+                                </tr>
+                            </tbody>
                         </table>
-                        <input class="btn btn-secondary btn-me" type="submit" value="Guardar cambios">
-                      </div>
+                        <a class="btn btn-success btn-me" href="{% url 'Movimientos' %}">Volver</a>
+                        <input class="btn btn-success btn-me" type="submit" value="Guardar cambios">
+                    </div>
                     </form>
                 </div>
-            </div>
+
         </div>
     </div>
+    <div class="col-xl-4">
+        <div class="card rounded-3 text-black">
+            <div class="card-body p-md-5 mx-md-4">
+                <h4 >Comprobante</h4>
+                  {% if object.comprobante %}
+                  <img src="{{object.comprobante.url}}" alt="" style="width: 100%">
+                  {% else %}
+                    <p>No se registran comprobantes</p>
+                  {% endif %}
+            </div>
+        </div>
 </div>
-<script>
-    function mostrarImagen() {
-        var modal = document.getElementById("miModal");
-        modal.style.display = "block";
-        modal.onclick = function() {
-            modal.style.display = "none";
-        }
-    }
-</script>
+
 
 {% endblock main %}
 

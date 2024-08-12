@@ -1,17 +1,24 @@
 from django.urls import path
 from AppZorro import views
-from AppZorro.views import Inicio, About, MovimientosListView, MovimientosDetailView, MovimientosCreateView, MovimientosDeleteView, MovimientosUpdateView
+
 
 urlpatterns = [
     
-    path('', Inicio.as_view(), name="Inicio"),
-    path('about/', About.as_view(), name="About")
+    path('', views.Inicio.as_view(), name="Inicio"),
+    path('about/', views.About.as_view(), name="About")
 ]
 
 urlpatterns += [
-    path('movimientos_list/', MovimientosListView.as_view(), name="Movimientos"),
-    path('movimientos_create/', MovimientosCreateView.as_view(), name="CrearMovimiento"),
-    path('movimientos_update/<int:pk>/', MovimientosUpdateView.as_view(), name="EditarMovimiento"),
-    path('movimientos_detail/<int:pk>/', MovimientosDetailView.as_view(), name="Detalles"),
-    path('movimientos_delete/<int:pk>/', MovimientosDeleteView.as_view(), name="MovimientosDelete"),
+    path('movimientos_list/', views.MovimientosListView.as_view(), name="Movimientos"),
+    path('movimientos_create/', views.MovimientosCreateView.as_view(), name="CrearMovimiento"),
+    path('movimientos_update/<int:pk>/', views.MovimientosUpdateView.as_view(), name="EditarMovimiento"),
+    path('movimientos_detail/<int:pk>/', views.MovimientosDetailView.as_view(), name="Detalles"),
+    path('movimientos_delete/<int:pk>/', views.MovimientosDeleteView.as_view(), name="MovimientosDelete"),
+]
+
+urlpatterns += [
+    path('rubros_list/', views.RubrosListView.as_view(), name="Rubros"),
+    path('rubros_create/', views.RubrosCreateView.as_view(), name="CrearRubro"),
+    path('rubros_update/<int:pk>/', views.RubrosUpdateView.as_view(), name="EditarRubro"),
+    path('rubros_delete/<int:pk>/', views.RubrosDeleteView.as_view(), name="BorrarRubro"),
 ]

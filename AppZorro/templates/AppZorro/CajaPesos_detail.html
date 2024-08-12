@@ -7,17 +7,14 @@
 {% block subtitulo %}  Movimientos de caja {% endblock subtitulo %}
 
 {% block main %}
-<div class="container py-1 h-50">
-
 
 <div id="todo" class="row d-flex justify-content-center align-items-center h-100">
-    <div class="col-xl-5">
-        <div class="card rounded-3 text-black">
-            <div class="card-body p-md-5 mx-md-4">
-                
-                <div class="text-center">
-                    <h2 class="mt-1 mb-3 pb-1">Detalle de movimiento</h2>
-                    <table class="table">
+  <div class="col-xl-5">
+      <div class="card rounded-3 text-black">
+          <div class="card-body p-md-5 mx-md-4">
+              <h3 class="display-6">Movimiento de caja</h3>
+
+                    <table class="table table-striped">
                         <tbody>
                           <tr>
                             <th scope="row">Id</th>
@@ -53,25 +50,31 @@
                             <th scope="row">El día</th>
                             <td>{{ object.action_time|date:'d/m/Y H:i' }}</td>
                           </tr>
-                          <tr>
-                            <th scope="row">Comprobante</th>
-                            <td>
-                              {% if object.comprobante %}
-                              <img src="{{object.comprobante.url}}" alt="" class="rounded-circle" style="width: 120px;">
-                              {% endif %}
-                            </td>
-                          </tr>
                         </tbody>
                       </table>
                       <div class="d-flex align-items-center justify-content-center pb-4">
-                        <a type="button"  class="btn btn-secondary btn-me" href="{% url 'Movimientos' %}">Volver al listado</a>
+                        <a type="button"  class="btn btn-success btn-me" href="{% url 'Movimientos' %}">Volver al listado</a>
                         <div class="col-xl-1"></div>
-                        <a type="button" class="btn btn-outline-danger" href="">Editar Movimiento</a>
+                        <a type="button" class="btn btn-outline-danger" href="{% url 'EditarMovimiento' object.id %}">Editar Movimiento</a>
                       </div>
-                </div>
+                
             </div>
         </div>
     </div>
+    <div class="col-xl-4">
+      <div class="card rounded-3 text-black">
+          <div class="card-body p-md-5 mx-md-4">
+              <h4 >Comprobante</h4>
+
+                {% if object.comprobante %}
+                <img src="{{object.comprobante.url}}" alt="" style="width: 100%">
+                {% else %}
+                  <p>No se registran comprobantes</p>
+                {% endif %}
+
+          </div>
+      </div>
+  </div>
 </div>
 </div>
 

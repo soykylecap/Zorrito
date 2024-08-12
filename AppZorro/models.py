@@ -10,14 +10,9 @@ class Rubros(models.Model):
     def __str__(self):
         return f"{self.titulo}"
 
-class Comprobantes(models.Model):
-    comprobante = models.ImageField(upload_to='comprobantes', null=True, blank = True)
-    def __str__(self):
-        return f"{self.comprobante}"
-
 class CajaPesos(models.Model):
     fecha = models.DateField(default=date.today)
-    rubro = models.ForeignKey(Rubros, on_delete=models.CASCADE)
+    rubro = models.ForeignKey(Rubros, null=True, on_delete=models.SET_NULL)
     detalle = models.CharField(max_length=60)
     ingreso = models.FloatField(default=0)
     egreso = models.FloatField(default=0)
