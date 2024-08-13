@@ -107,6 +107,8 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 LOGIN_URL = "/users/login/"
+
+
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
 
@@ -144,3 +146,4 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+

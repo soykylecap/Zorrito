@@ -14,11 +14,11 @@
             <div class="card-body p-md-5 mx-md-4">
                 <h3 class="display-5 mb-3 pb-1">Caja en pesos</h3>
                 <div class="d-flex justify-content-end mb-3">
-                    <a class="btn btn-success px-3" type="button" href="{% url 'CrearMovimiento' %}">Agregar nuevo</a>
+                    <a class="btn btn-dark px-3" type="button" href="{% url 'CrearMovimiento' %}">Agregar nuevo</a>
                 </div>
                     <table class="text-center table table-striped table-bordered">
                         <thead class="thead-primary">
-                            <tr class="text-bg-success p-3">
+                            <tr class="text-bg-dark p-3">
                                 <th scope="col">Fecha</th>
                                 <th scope="col">Detalle</th>
                                 <th scope="col">Rubro</th>
@@ -36,15 +36,16 @@
                                     <td>{{ movimiento.fecha|date:"d/m/Y" }}</td>
                                     <td>{{ movimiento.detalle }}</td>
                                     <td>{{ movimiento.rubro }}</td>
-                                    <td>{{ movimiento.ingreso|floatformat:"2g" }}</td>
-                                    <td>{{ movimiento.egreso|floatformat:"2g" }}</td> 
-                                    <td>{{ movimiento.saldo_parcial }}</td> 
+                                    <td>$ {{ movimiento.ingreso|floatformat:"2g" }}</td>
+                                    <td>$ {{ movimiento.egreso|floatformat:"2g" }}</td> 
+                                    <td>$ {{ movimiento.saldo_parcial }}</td> 
                                     <td><a class="bi bi-search" href="{% url 'Detalles' movimiento.id %}"></a></td> 
                                     <td><a class="bi bi-pen" href="{% url 'EditarMovimiento' movimiento.id %}"></a></td> 
                                     <td><a class="bi bi-trash2" href="{% url 'MovimientosDelete' movimiento.id %}"></a></td> 
                                 </tr>
                             {% empty %}
-                                No hay nada
+                                <tr><th><h6>Buuu... La caja está vacia.</h6></th></tr>
+                                <th><h6>Que lindo seria para el Zorrito que ingrese algun pesito.</h6></th>
                             {% endfor %}
                         </tbody>
                     </table>

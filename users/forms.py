@@ -28,3 +28,4 @@ class UserEditForm(UserCreationForm):
         model = User
         fields = ['email', 'imagen']
         help_texts = {k:"" for k in fields}
+

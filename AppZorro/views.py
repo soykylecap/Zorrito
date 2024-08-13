@@ -32,6 +32,7 @@ class MovimientosListView(LoginRequiredMixin, ListView):
             saldo_parcial += cuenta.ingreso - cuenta.egreso
             cuenta.saldo_parcial = saldo_parcial
         return queryset
+    
 
 
 class MovimientosDetailView(LoginRequiredMixin, DetailView):
@@ -42,6 +43,7 @@ class MovimientosCreateView(LoginRequiredMixin, CreateView):
     model = CajaPesos
     fields = ['fecha', 'detalle', 'rubro', 'ingreso', 'egreso', 'comprobante']
     success_url = reverse_lazy("Movimientos")
+    
     
     def form_valid(self, form):
         form.instance.autor = self.request.user

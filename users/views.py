@@ -1,13 +1,14 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import User
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import login_required
 
-from django.contrib.auth.views import PasswordResetCompleteView
 from users.forms import UserEditForm, UserRegisterForm
 from users.models import Imagen
+
+
 
 # Create your views here.
 
@@ -21,7 +22,11 @@ def login_request(request):
             user = authenticate(username=usuario, password=contrasenia)
             if user is not None:
                 login(request, user)
-                return render(request, "AppZorro/index.html")
+                next_url = request.GET.get('next', '')
+                print (next_url)
+                if next_url == '':
+                    return render(request, "AppZorro/index.html")
+                return redirect(next_url)
         msg_login = "Usuario o contraseña incorrectos"
     form = AuthenticationForm()
     return render(request, "users/login.html", {"form": form, "msg_login": msg_login})
@@ -46,11 +51,9 @@ def register(request):
     return render(request,"users/register.html" ,  {"form":form, "msg_register": msg_register})
 
 
+
 @login_required
 def edit(request):
-    # El usuario para poder editar su perfil primero debe estar logueado.
-    # Al estar logueado, podremos encontrar dentro del request la instancia
-    # del usuario -> request.user
     usuario = request.user
     if request.method == 'POST':
         miFormulario = UserEditForm(request.POST, request.FILES)
@@ -63,7 +66,6 @@ def edit(request):
             miFormulario = UserEditForm(initial=datos)
             usuario.email = informacion['email']
             usuario.save()
-
             try:
                 avatar = Imagen.objects.get(user=usuario)
             except Imagen.DoesNotExist:
@@ -71,7 +73,7 @@ def edit(request):
                     avatar = Imagen(user=usuario, imagen=informacion["imagen"])
                     avatar.save()
                 else:
-                    avatar = Imagen(user=usuario, imagen="/avatares/avatar_defecto.png")
+                    avatar = Imagen(user=usuario, imagen="AppZorro/static/AppZorro/assets/img/avatar.png")  
                     avatar.save()
             else:
                 if informacion["imagen"]:
@@ -83,15 +85,8 @@ def edit(request):
             return render(request, "AppZorro/index.html")
     else:
         datos = {
-            'first_name': usuario.username,
+            'username': usuario.username,
             'email': usuario.email
         }
         miFormulario = UserEditForm(initial=datos)
-
     return render(request, "users/edit.html", {"mi_form": miFormulario, "usuario": usuario})
-
-
-
-
-
-

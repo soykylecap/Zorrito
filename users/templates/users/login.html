@@ -22,7 +22,7 @@
                   <div data-mdb-input-init class="form-outline mb-4">
                     {% csrf_token %}
                     {{ form.as_p }}
-                    <input class="btn btn-secondary btn-me" type="submit" value="Iniciar sesión">
+                    <input class="btn btn-dark btn-me" type="submit" value="Iniciar sesión">
                   </div>
                   <div class="text-center pt-1 mb-5 pb-1">
                     <a class="text-muted" href="{% url 'PasswordReset' %}">¿Olvidaste tu clave?</a>
