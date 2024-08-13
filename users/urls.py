@@ -8,7 +8,7 @@ urlpatterns = [
     path('login/', views.login_request, name="Login"),
     path('register/', views.register, name="Register"),
     path('edit/', views.edit, name="Edit"),
-    path('logout/', LogoutView.as_view(template_name='AppZorro/index.html'), name="LogoutZorro"),
+    path('logout/', views.UsersLogoutView.as_view(template_name='AppZorro/index.html'), name="LogoutZorro"),
 ]
 
 

@@ -4,8 +4,9 @@ from AppZorro import views
 
 urlpatterns = [
     
-    path('', views.Inicio.as_view(), name="Inicio"),
-    path('about/', views.About.as_view(), name="About")
+    #path('', views.Inicio.as_view(), name="Inicio"),
+    path('about/', views.About.as_view(), name="About"),
+    path('', views.InicioListView.as_view(), name="Inicio"),
 ]
 
 urlpatterns += [

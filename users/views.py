@@ -4,10 +4,12 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import User
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.views import LogoutView
+from django.views.generic import ListView
 
 from users.forms import UserEditForm, UserRegisterForm
 from users.models import Imagen
-
+from AppZorro.models import CajaPesos
 
 
 # Create your views here.
@@ -20,12 +22,12 @@ def login_request(request):
             usuario = form.cleaned_data.get('username')
             contrasenia = form.cleaned_data.get('password')
             user = authenticate(username=usuario, password=contrasenia)
+            total_registros = CajaPesos.objects.count()
             if user is not None:
                 login(request, user)
                 next_url = request.GET.get('next', '')
-                print (next_url)
                 if next_url == '':
-                    return render(request, "AppZorro/index.html")
+                    return render(request, "AppZorro/index.html", {'total_registros':total_registros, })
                 return redirect(next_url)
         msg_login = "Usuario o contraseña incorrectos"
     form = AuthenticationForm()
@@ -90,3 +92,14 @@ def edit(request):
         }
         miFormulario = UserEditForm(initial=datos)
     return render(request, "users/edit.html", {"mi_form": miFormulario, "usuario": usuario})
+
+
+class UsersLogoutView(LogoutView, ListView):
+    model = CajaPesos
+    template_name = 'AppZorro/index.html'
+    object_list = 0
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        total_registros = CajaPesos.objects.count()
+        context['total_registros'] = total_registros
+        return context

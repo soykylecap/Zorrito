@@ -27,11 +27,21 @@
                         <a class="btn btn-dark btn-lg" href="{% url 'Login' %}">Acceder</a>
                       {% endif %}
                   </div>
-                  
+
+                </div>
               </div>
           </div>
         </div>
         <!-- Page Content-->
+        {% if total_registros %}
+        <div class="d-flex justify-content-center">
+        <div class="card text-white bg-dark mb-3 text-center" style="max-width: 18rem;">
+          <div class="card-body">
+            <p class="card-title display-1">{{ total_registros }}</p>
+            <p class="card-text">Son los movimientos de caja registrados hasta el momento.</p>
+          </div>
+        </div>
 
+        {% endif %}
 
 {% endblock main %}

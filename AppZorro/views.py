@@ -11,12 +11,23 @@ from django.conf import settings
 
 
 
-class Inicio(TemplateView):
-    template_name = 'AppZorro/index.html'
+#class Inicio(TemplateView):
+#    template_name = 'AppZorro/index.html'
 
 class About(TemplateView):
     template_name = 'AppZorro/about.html'
 
+class InicioListView(ListView):
+    model = CajaPesos
+    template_name = 'AppZorro/index.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # Contar todos los registros del modelo
+        total_registros = CajaPesos.objects.count()
+        # Agregar el conteo a la variable de contexto
+        context['total_registros'] = total_registros
+        return context
 
 
 #Vistas para CajaPesos
