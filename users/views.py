@@ -47,8 +47,8 @@ def register(request):
             avatar.save()
             return render(request,"AppZorro/index.html")
         else:
-            msg_register = "Error en los datos"
-            msg_register += f" | {form.errors}"
+            msg_register = form.errors
+            print (msg_register)
     form = UserRegisterForm()     
     return render(request,"users/register.html" ,  {"form":form, "msg_register": msg_register})
 

@@ -4,44 +4,38 @@
 
 {% block title %}El Zorrito | Inicio{% endblock title %}
 
-{% block subtitulo %}   {% endblock subtitulo %}
-
 {% block main %}
-        <!-- Header-->
 
-        <div class="h-100">
-          <div class="container px-lg-5 ">
-              <div class="p-4 p-lg-4  rounded-3 text-center">
-                  <div class="m-4 m-lg-5">
-
-                      <img src="{% static 'AppZorro/assets/img/logo.png' %}" alt="" height="100px">
-                      <h1 class="display-5 fw-bold text-white">El Zorrito te cuida las cuentas</h1>
-                      <hr class="divider text-white" />
-                      <p class="lead text-white">Una aplicación simple para controlar los ingresos y los gastos de tu obra.</p>
-                      {% if request.user.is_authenticated %}
-                        <p class="lead text-white" >Todo listo para empezar a trabajar.</p>
-                        <table class="text-center">
-                            <a class="btn btn-dark btn-lg" href="{% url 'Movimientos' %}">Ver movimientos</a>
-                        </table>
-                      {% else %}
-                        <a class="btn btn-dark btn-lg" href="{% url 'Login' %}">Acceder</a>
-                      {% endif %}
-                  </div>
-
-                </div>
-              </div>
+<div class="h-100">
+  <div class="container px-lg-5 ">
+      <div class="p-4 p-lg-4  rounded-3 text-center">
+          <div class="m-4 m-lg-5">
+              <h1 class="display-5 fw-bold text-white">El Zorrito te cuida las cuentas</h1>
+              <hr class="divider text-white" />
+              <p class="lead text-white">Una aplicación simple para controlar los ingresos y los gastos de tu obra.</p>
+              <table class="text-center">
+                  {% if total_registros %}
+                      <div class="d-flex justify-content-center">
+                      <div class="card text-white bg-danger mb-3 text-center" style="max-width: 28rem;">
+                        <div class="card-body">
+                          <p class="card-title display-1">{{ total_registros }}</p>
+                          <p class="card-text">Son los movimientos de caja registrados hasta el momento. ¡El Zorrito está trabajando! Accedé para conocer mas...</p>
+                        </div>
+                      </div>
+                  {% endif %}
+              </table>
+              {% if request.user.is_authenticated %}
+                <p class="lead text-white" >Todo listo para empezar a trabajar.</p>
+                <table class="text-center">
+                    <a class="btn btn-dark btn-lg" href="{% url 'Movimientos' %}">Ver movimientos</a>
+                </table>
+              {% else %}
+                <a class="btn btn-dark btn-lg" href="{% url 'Login' %}">Acceder</a>
+              {% endif %}
           </div>
         </div>
-        <!-- Page Content-->
-        {% if total_registros %}
-        <div class="d-flex justify-content-center">
-        <div class="card text-white bg-dark mb-3 text-center" style="max-width: 18rem;">
-          <div class="card-body">
-            <p class="card-title display-1">{{ total_registros }}</p>
-            <p class="card-text">Son los movimientos de caja registrados hasta el momento.</p>
-          </div>
-        </div>
-
-        {% endif %}
+      </div>
+  </div>
+</div>
 
 {% endblock main %}

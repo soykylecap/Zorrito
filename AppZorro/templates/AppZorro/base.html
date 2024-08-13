@@ -16,11 +16,12 @@
         <!-- Core theme CSS (includes Bootstrap)-->
         <link href="{% static 'AppZorro/css/styles.css' %}" rel="stylesheet" />
     </head>
-    <body class="h-100 bg-success">
+
+    <body class="h-100 bg-success ">
         <!-- Responsive navbar-->
-        <nav class="navbar navbar-expand-xl p-3 navbar-dark navbar-gradient">
+        <nav class="navbar navbar-expand-xl p-3 navbar-dark navbar-gradient bg-gradient">
             <div class="container px-lg-5">
-                <a class="navbar-brand" href="{% url 'Inicio' %}"><img src="{% static 'AppZorro/assets/img/logo.png' %}" alt="" height="50px"></a>
+                <a class="navbar-brand" href="{% url 'Inicio' %}"><img src="{% static 'AppZorro/assets/img/logo.png' %}" alt="" height="70px"></a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
@@ -39,7 +40,7 @@
                                 <a class="dropdown-item" href="{% url 'LogoutZorro' %}">Salir</a>
                             </div>
                             </li>
-                            <img src="{{request.user.imagen.imagen.url}}" alt="" class="rounded-circle" height="40px">
+                            <img src="{{request.user.imagen.imagen.url}}" alt="" class="rounded-circle border border-dark" height="50px">
                         {% else %}
                         <li class="nav-item"><a class="nav-link active" href="{% url 'Login' %}">Acceder</a></li>
                         {% endif %}
@@ -48,17 +49,14 @@
             </div>
         </nav>
 
-        <!-- Header-->
-        
-
         {% block main %}
 
         {% endblock main %}
-        
+
         <!-- Footer-->
         <div class="fixed-bottom">
             <footer class="py-1 bg-dark">
-                <div class="container"><p class="m-1 text-center text-white">&copy; Zorrito 2024</p></div>
+                <div class="container"><p class="m-1 text-center text-white">&copy; Zorrito 2024 | Andrés Kyle</p></div>
             </footer>
         </div>
         <!-- JS Bootstrap v5.2 -->
