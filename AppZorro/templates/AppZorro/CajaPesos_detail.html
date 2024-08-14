@@ -8,53 +8,57 @@
 
 <div id="todo" class="row d-flex justify-content-center align-items-center h-100">
   <div class="col-xl-5">
-      
+    
       <div class="card rounded-3 text-black">
           <div class="card-body p-md-5 mx-md-4">
               <h3 class="display-6">Movimiento de caja</h3>
-                  <table class="table table-striped">
-                      <tbody>
+                  <table class="table table-striped ">
                         <tr>
-                          <th scope="row">Id</th>
+                          <th width="20%">Id</th>
                           <td>{{ object.id }}</td>
                         </tr>
                         <tr>
-                          <th scope="row">Fecha</th>
+                          <th width="20%">Fecha</th>
                           <td>{{ object.fecha|date:"d/m/Y" }}</td>
                         </tr>
                         <tr>
-                          <th scope="row">Detalle</th>
+                          <th width="20%">Detalle</th>
                           <td>{{ object.detalle }}</td>
                         </tr>
                         <tr>
-                          <th scope="row">Rubro</th>
+                          <th width="20%">Rubro</th>
                           <td>{{ object.rubro }}</td>
                         </tr>
                         <tr>
                           {% if object.ingreso > 0 %}
-                          <th scope="row">Ingreso</th>
+                          <th width="20%">Ingreso</th>
                           <td>$ {{ object.ingreso|floatformat:"2g" }}</td>
                           {% endif %}
                           {% if object.egreso > 0 %}
-                          <th scope="row">Gasto</th>
+                          <th width="20%">Gasto</th>
                           <td>$ {{ object.egreso|floatformat:"2g" }}</td>
                           {% endif %}
                         </tr>
                         <tr>
-                          <th scope="row">Creado por</th>
+                          <th width="20%">Creado por</th>
                           <td>{{ object.autor }}</td>
                         </tr>
                         <tr>
-                          <th scope="row">El día</th>
+                          <th width="20%">El día</th>
                           <td>{{ object.action_time|date:'d/m/Y H:i' }}</td>
                         </tr>
-                      </tbody>
+
                   </table>
-                  <div class="d-flex align-items-center justify-content-center pb-4">
-                    <a type="button"  class="btn btn-success btn-me" href="{% url 'Movimientos' %}">Volver al listado</a>
-                    <div class="col-xl-1"></div>
-                    <a type="button" class="btn btn-outline-danger" href="{% url 'EditarMovimiento' object.id %}">Editar Movimiento</a>
-                  </div>
+                  <table>
+                      <tr>
+                        <td><a type="button" class="btn btn-outline-danger" href="{% url 'EditarMovimiento' object.id %}">Editar</a></td>
+                        <td><a type="button" class="btn btn-outline-danger" href="{% url 'MovimientosDelete' object.id %}">Eliminar</a></td>
+                        <td><a type="button" class="btn btn-success btn-me" href="{% url 'Detalles' previo %}">Anterior</a></td>
+                        <td><a type="button"  class="btn btn-success btn-me" href="{% url 'Movimientos' %}">Volver al listado</a></td>
+                        <td><a type="button" class="btn btn-success btn-me" href="{% url 'Detalles' siguiente %}">Siguiente</a></td>
+                      </tr>
+                  </table>
+                
               </div>
           </div>
       </div>

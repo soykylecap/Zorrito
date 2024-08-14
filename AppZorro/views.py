@@ -43,18 +43,49 @@ class MovimientosListView(LoginRequiredMixin, ListView):
             saldo_parcial += cuenta.ingreso - cuenta.egreso
             cuenta.saldo_parcial = saldo_parcial
         return queryset
-    
 
 
 class MovimientosDetailView(LoginRequiredMixin, DetailView):
     model = CajaPesos
+
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        context = self.get_context_data(object=self.object)
+
+        id_actual = self.object.id
+
+        # No me funcionó usar ----> previo = CajaPesos.objects.filter(id__gt=id_actual).order_by('-id').first()
+        objetos_ordenados = list(CajaPesos.objects.order_by('id'))
+
+        min = objetos_ordenados[0]
+        max = objetos_ordenados[-1]
+
+        min = min.id
+        max = max.id
+
+
+        if self.object.id == min:
+            previo = min
+        else:
+            previo = objetos_ordenados[objetos_ordenados.index(self.object)-1]
+            previo = previo.id
+
+        if self.object.id == max:
+            siguiente = max
+        else:
+            siguiente = CajaPesos.objects.filter(id__gt=id_actual).order_by('id').first()
+            siguiente = siguiente.id
+
+        context['siguiente'] = siguiente
+        context['previo'] = previo
+
+        return self.render_to_response(context)
 
 
 class MovimientosCreateView(LoginRequiredMixin, CreateView):
     model = CajaPesos
     fields = ['fecha', 'detalle', 'rubro', 'ingreso', 'egreso', 'comprobante']
     success_url = reverse_lazy("Movimientos")
-    
     
     def form_valid(self, form):
         form.instance.autor = self.request.user
