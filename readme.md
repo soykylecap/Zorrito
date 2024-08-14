@@ -1,1 +1,1 @@
-Trabajo para la entrega final del curso de Python de Coder, realizado por Andrés Kyle.
+El Zorrito es un trabajo, realizado por Andrés Kyle, para la entrega final del curso de Python de Coder.

@@ -6,7 +6,7 @@
 
 {% block main %}
 
-<div id="todo" class="row d-flex justify-content-center align-items-center h-100">
+<div id="todo" class="row d-flex justify-content-center align-items-center">
   <div class="col-xl-5">
     
       <div class="card rounded-3 text-black">
@@ -53,9 +53,9 @@
                       <tr>
                         <td><a type="button" class="btn btn-outline-danger" href="{% url 'EditarMovimiento' object.id %}">Editar</a></td>
                         <td><a type="button" class="btn btn-outline-danger" href="{% url 'MovimientosDelete' object.id %}">Eliminar</a></td>
-                        <td><a type="button" class="btn btn-success btn-me" href="{% url 'Detalles' previo %}">Anterior</a></td>
-                        <td><a type="button"  class="btn btn-success btn-me" href="{% url 'Movimientos' %}">Volver al listado</a></td>
-                        <td><a type="button" class="btn btn-success btn-me" href="{% url 'Detalles' siguiente %}">Siguiente</a></td>
+                        <td><a type="button" class="btn btn-secondary btn-me" href="{% url 'Detalles' previo %}">Anterior</a></td>
+                        <td><a type="button"  class="btn btn-secondary btn-me" href="{% url 'Movimientos' %}">Volver al listado</a></td>
+                        <td><a type="button" class="btn btn-secondary btn-me" href="{% url 'Detalles' siguiente %}">Siguiente</a></td>
                       </tr>
                   </table>
                 

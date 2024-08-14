@@ -10,22 +10,22 @@
   <div class="container px-lg-5 ">
       <div class="p-4 p-lg-4  rounded-3 text-center">
           <div class="m-4 m-lg-5">
-              <h1 class="display-5 fw-bold text-white">El Zorrito te cuida las cuentas</h1>
-              <hr class="divider text-white">
-              <p class="lead text-white">Una aplicación simple para controlar los ingresos y los gastos de tu obra.</p>
+              <h1 class="display-5 fw-bold text-black">Te cuida las cuentas</h1>
+              <hr class="divider text-black">
+              <p class="lead text-black">Una aplicación simple para controlar los ingresos y los gastos de tu obra.</p>
               <table class="text-center">
                   {% if total_registros %}
-                      <div class="d-flex justify-content-center">
-                      <div class="card text-white bg-danger bg-gradient mb-3 text-center" style="max-width: 28rem;">
+                      <div class="d-flex justify-content-center ">
+                      <div class="card text-black bg-secondry bg-gradient mb-3 text-center" style="max-width: 21rem;">
                         <div class="card-body">
                           <p class="card-title display-1">{{ total_registros }}</p>
-                          <p class="card-text">Son los movimientos de caja registrados hasta el momento. ¡El Zorrito está trabajando! Accedé para conocer mas...</p>
+                          <p class="card-text">Son los movimientos de caja registrados. ¡El Zorrito está trabajando!</p>
                         </div>
                       </div>
                   {% endif %}
               </table>
               {% if request.user.is_authenticated %}
-                <p class="lead text-white" >Todo listo para empezar a trabajar.</p>
+                <p class="lead text-black" >Todo listo para comenzar.</p>
                 <table class="text-center">
                     <a class="btn btn-dark btn-lg" href="{% url 'Movimientos' %}">Ver movimientos</a>
                 </table>

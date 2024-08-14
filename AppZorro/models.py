@@ -17,7 +17,7 @@ class CajaPesos(models.Model):
     ingreso = models.FloatField(default=0)
     egreso = models.FloatField(default=0)
     comprobante = models.ImageField(upload_to='comprobantes', null=True, blank = True)
-    autor = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, blank = True)
+    autor = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.RESTRICT, null=True, blank = True)
     action_time = models.DateTimeField(auto_now=True)
 
 

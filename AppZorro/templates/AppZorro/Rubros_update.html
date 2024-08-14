@@ -17,11 +17,11 @@
                       <p class="fs-5 fw-bold">{{ msg_register }}</p>
                       <div data-mdb-input-init class="form-outline mb-4">
                         {% csrf_token %}
-                        <table class="table table-striped text-bg-info">
+                        <table class="table table-striped text-white ">
                           {{ form.as_table }}
                         </table>
-                        <a class="btn btn-info btn-me" href="{% url 'Rubros' %}">Volver</a>
-                        <input class="btn btn-info btn-me" type="submit" value="Guardar cambios">
+                        <a class="btn btn-success btn-me" href="{% url 'Rubros' %}">Volver</a>
+                        <input class="btn btn-success btn-me" type="submit" value="Guardar cambios">
                       </div>
                     </form>
                 </div>
