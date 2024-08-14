@@ -1,11 +1,11 @@
-from django.db.models.query import QuerySet
-from django.http import HttpRequest, HttpResponse
+#from django.db.models.query import QuerySet
+#from django.http import HttpRequest, HttpResponse
 from django.views.generic import TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import ListView, DetailView, CreateView, DeleteView, UpdateView
 from AppZorro.models import CajaPesos, Rubros
 from django.urls import reverse_lazy
-from django.conf import settings
+#from django.conf import settings
 
 # Create your views here.
 

@@ -6,10 +6,12 @@ from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import LogoutView
 from django.views.generic import ListView
-
 from users.forms import UserEditForm, UserRegisterForm
 from users.models import Imagen
-from AppZorro.models import CajaPesos
+from AppZorro.models import CajaPesos 
+
+
+
 
 
 # Create your views here.
@@ -70,19 +72,17 @@ def edit(request):
             usuario.save()
             try:
                 avatar = Imagen.objects.get(user=usuario)
+                print(Imagen)
             except Imagen.DoesNotExist:
                 if informacion["imagen"] != "":
                     avatar = Imagen(user=usuario, imagen=informacion["imagen"])
                     avatar.save()
                 else:
-                    avatar = Imagen(user=usuario, imagen="AppZorro/static/AppZorro/assets/img/avatar.png")  
+                    avatar = Imagen(user=usuario, imagen="/avatares/avatar_defecto.png")  
                     avatar.save()
             else:
                 if informacion["imagen"]:
                     avatar.imagen = informacion["imagen"]
-                    avatar.save()
-                else:
-                    avatar.imagen = "/avatares/avatar_defecto.png"
                     avatar.save()
             return render(request, "AppZorro/index.html")
     else:
@@ -103,3 +103,4 @@ class UsersLogoutView(LogoutView, ListView):
         total_registros = CajaPesos.objects.count()
         context['total_registros'] = total_registros
         return context
+
