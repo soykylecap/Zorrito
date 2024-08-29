@@ -15,11 +15,11 @@
                         <h3 class="display-6 mb-3 pb-1">Eliminar rubro</h3>
                         <form method="POST">
                             {% csrf_token %}
-                            <h2 class="text-bg-success p-3 m-3">{{ object.titulo }}</h2>
+                            <h2 class="text-bg-info p-3 m-3">{{ object.titulo }}</h2>
                             <h5>¿Estas seguro/a?</h5>
                             <h6 class="p-1">Los movimientos de caja pertenecientes a este rubro quedaran desclasificados</h6>
                             <input class="btn btn-outline-danger" type="submit" value="Eliminar">
-                            <a class="btn btn-success btn-me" href="{% url 'Rubros' %}">Volver</a>
+                            <a class="btn btn-info btn-me" href="{% url 'Rubros' %}">Volver</a>
                         </form>
                     </div>
                 </div>

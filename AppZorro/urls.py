@@ -23,3 +23,13 @@ urlpatterns += [
     path('rubros_update/<int:pk>/', views.RubrosUpdateView.as_view(), name="EditarRubro"),
     path('rubros_delete/<int:pk>/', views.RubrosDeleteView.as_view(), name="BorrarRubro"),
 ]
+
+urlpatterns += [
+    path('dolares_list/', views.DolaresListView.as_view(), name="Dolares"),
+    path('dolares_create/', views.DolaresCreateView.as_view(), name="CrearDolares"),
+    path('dolares_venta/', views.DolaresVentaView.as_view(), name="VentaDolares"),
+    path('dolares_compra/', views.DolaresCompraView.as_view(), name="CompraDolares"),
+    path('dolares_update/<int:pk>/', views.DolaresUpdateView.as_view(), name="EditarDolares"),
+    path('dolares_detail/<int:pk>/', views.DolaresDetailView.as_view(), name="DetalleDolar"),
+    path('dolares_delete/<int:pk>/', views.DolaresDeleteView.as_view(), name="DolaresDelete"),
+]

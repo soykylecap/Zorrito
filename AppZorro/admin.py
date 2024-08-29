@@ -1,5 +1,5 @@
 from django.contrib import admin
-from AppZorro.models import Rubros, CajaPesos
+from AppZorro.models import Rubros, CajaPesos, Obra, Tarea, CajaDolares
 from users.models import Imagen
 
 # Register your models here.
@@ -7,6 +7,9 @@ from users.models import Imagen
 #admin.site.register(Rubros)
 #admin.site.register(CajaPesos)
 #admin.site.register(Imagen)
+admin.site.register(Obra)
+admin.site.register(Tarea)
+admin.site.register(CajaDolares)
 
 
 @admin.register(Rubros)
@@ -22,7 +25,7 @@ class AdminRubros(admin.ModelAdmin):
 
 @admin.register(CajaPesos)
 class AdminCajaPesos(admin.ModelAdmin):
-    list_display = ("id", "fecha", "detalle", "rubro", "ingreso", "egreso" )
+    list_display = ("id", "fecha", "detalle", "rubro", "ingreso", "egreso", "obra" )
     ordering = ("fecha", "action_time")
     search_fields = ("detalle", )
     list_display_links = ("detalle", )
@@ -30,6 +33,8 @@ class AdminCajaPesos(admin.ModelAdmin):
 #    list_filter = ()
 #    list_per_page = 3
 #    list_editable = ("titulo", )
+
+
 
 @admin.register(Imagen)
 class AdminImagen(admin.ModelAdmin):

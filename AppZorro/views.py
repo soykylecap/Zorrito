@@ -3,8 +3,11 @@
 from django.views.generic import TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import ListView, DetailView, CreateView, DeleteView, UpdateView
-from AppZorro.models import CajaPesos, Rubros
+from AppZorro.models import CajaPesos, Rubros, CajaDolares, Obra
 from django.urls import reverse_lazy
+from dolar import DolarBlue
+from main import EnObra
+
 #from django.conf import settings
 
 # Create your views here.
@@ -22,11 +25,15 @@ class InicioListView(ListView):
     template_name = 'AppZorro/index.html'
 
     def get_context_data(self, **kwargs):
+        
         context = super().get_context_data(**kwargs)
-        # Contar todos los registros del modelo
         total_registros = CajaPesos.objects.count()
-        # Agregar el conteo a la variable de contexto
+        context.clear()
+
+        context['dolar_compra'] = DolarBlue.compra()
+        context['dolar_venta'] = DolarBlue.venta()
         context['total_registros'] = total_registros
+
         return context
 
 
@@ -124,3 +131,113 @@ class RubrosUpdateView(LoginRequiredMixin, UpdateView):
     success_url = reverse_lazy("Rubros")
     fields = ['titulo',]
     template_name = "AppZorro/Rubros_update.html"
+
+
+
+
+
+#Vistas para CajaDolares
+
+class DolaresListView(LoginRequiredMixin, ListView):
+    model = CajaDolares
+    ordering = ["fecha"]
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        saldo_parcial = 0
+        for cuenta in queryset:
+            saldo_parcial += cuenta.ingreso - cuenta.egreso
+            cuenta.saldo_parcial = saldo_parcial
+        return queryset
+
+
+class DolaresDetailView(LoginRequiredMixin, DetailView):
+    model = CajaDolares
+
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        context = self.get_context_data(object=self.object)
+
+        id_actual = self.object.id
+
+        # No me funcionó usar ----> previo = CajaDolares.objects.filter(id__gt=id_actual).order_by('-id').first()
+        objetos_ordenados = list(CajaDolares.objects.order_by('id'))
+
+        min = objetos_ordenados[0]
+        max = objetos_ordenados[-1]
+
+        min = min.id
+        max = max.id
+
+
+        if self.object.id == min:
+            previo = min
+        else:
+            previo = objetos_ordenados[objetos_ordenados.index(self.object)-1]
+            previo = previo.id
+
+        if self.object.id == max:
+            siguiente = max
+        else:
+            siguiente = CajaDolares.objects.filter(id__gt=id_actual).order_by('id').first()
+            siguiente = siguiente.id
+
+        context['siguiente'] = siguiente
+        context['previo'] = previo
+
+        return self.render_to_response(context)
+
+
+class DolaresCreateView(LoginRequiredMixin, CreateView):
+    model = CajaDolares
+    fields = ['fecha', 'detalle', 'ingreso', 'egreso']
+    success_url = reverse_lazy("Dolares")
+    
+    def form_valid(self, form):
+        form.instance.autor = self.request.user
+        form.instance.es_cambio = False
+        form.instance.obra = Obra.objects.get(id=EnObra.consulta())
+        return super().form_valid(form)
+    
+
+class DolaresVentaView(LoginRequiredMixin, CreateView):
+    model = CajaDolares
+    fields = ['fecha', 'detalle', 'egreso', 'cotiza']
+    template_name = "AppZorro/CajaDolares_form_venta.html"
+    success_url = reverse_lazy("Dolares")
+    
+    def form_valid(self, form):
+        form.instance.autor = self.request.user
+        form.instance.es_cambio = True
+        form.instance.obra = Obra.objects.get(id=EnObra.consulta())
+        nuevo_detalle = "Vendimos dolares a " + form.instance.detalle
+        form.instance.detalle = nuevo_detalle
+        return super().form_valid(form)
+
+
+class DolaresCompraView(LoginRequiredMixin, CreateView):
+    model = CajaDolares
+    fields = ['fecha', 'detalle' 'egreso', 'cotiza']
+    success_url = reverse_lazy("Dolares")
+    
+    def form_valid(self, form):
+        form.instance.autor = self.request.user
+        form.instance.es_cambio = True
+        form.instance.obra = Obra.objects.get(id=EnObra.consulta())
+        nuevo_detalle = "Vendimos dolares a " + form.instance.detalle
+        form.instance.detalle = nuevo_detalle
+        return super().form_valid(form)
+
+
+class DolaresDeleteView(LoginRequiredMixin, DeleteView):
+    model = CajaDolares
+    success_url = reverse_lazy("Dolares")
+
+
+class DolaresUpdateView(LoginRequiredMixin, UpdateView):
+    model = CajaDolares
+    success_url = reverse_lazy("Dolares")
+    fields = ['fecha', 'detalle', 'cotiza', 'ingreso', 'egreso']
+    template_name = "AppZorro/CajaDolares_update.html"
+
+

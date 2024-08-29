@@ -1,0 +1,64 @@
+{% extends 'AppZorro/base.html' %}
+
+{% load static %}
+
+{% block title %}El Zorrito | Caja {% endblock title %}
+
+{% block main %}
+
+<div id="todo" class="row d-flex justify-content-center align-items-center h-100">
+    <div class="col-xl-5">
+        <div class="card rounded-3 text-black">
+            <div class="card-body p-md-5 mx-md-4">
+                <h3 class="display-6">Editar movimiento en u$s</h3>
+                <form action="" method="POST" enctype="multipart/form-data">
+                    <div data-mdb-input-init class="form-outline mb-4">
+                        {% csrf_token %}
+                        <table class="table table-striped">
+                            <tbody>
+                                <tr>
+                                    <th scope="row">{{ form.fecha.label }}</th>
+                                    <td>{{ form.fecha }}</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">{{ form.detalle.label }}</th>
+                                    <td>{{ form.detalle }}</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">{{ form.cotiza.label }}</th>
+                                    <td>{{ form.cotiza }}</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">{{ form.ingreso.label }}</th>
+                                    <td>{{ form.ingreso }}</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">{{ form.egreso.label }}</th>
+                                    <td>{{ form.egreso }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <a class="btn btn-success btn-me" href="{% url 'Dolares' %}">Volver</a>
+                        <input class="btn btn-success btn-me" type="submit" value="Guardar cambios">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-4">
+        <div class="card rounded-3 text-black">
+            <div class="card-body p-md-5 mx-md-4">
+                <h4 >Comprobante</h4>
+                  {% if object.comprobante %}
+                  <img src="{{object.comprobante.url}}" alt="" class="img-fluid"">
+                  {% else %}
+                    <p>No se registran comprobantes</p>
+                  {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock main %}
+
+

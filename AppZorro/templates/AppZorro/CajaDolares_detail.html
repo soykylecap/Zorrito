@@ -1,0 +1,84 @@
+{% extends 'AppZorro/base.html' %}
+
+{% load static %}
+
+{% block title %}El Zorrito | Caja {% endblock title %}
+
+{% block main %}
+
+<div id="todo" class="row d-flex justify-content-center align-items-center">
+  <div class="col-xl-5">
+    
+      <div class="card rounded-3 text-black">
+          <div class="card-body p-md-5 mx-md-4">
+              <h3 class="display-6">Movimiento de caja en u$s</h3>
+                  <table class="table table-striped ">
+                        <tr>
+                          <th width="20%">Id</th>
+                          <td>{{ object.id }}</td>
+                        </tr>
+                        <tr>
+                          <th width="20%">Fecha</th>
+                          <td>{{ object.fecha|date:"d/m/Y" }}</td>
+                        </tr>
+                        <tr>
+                          <th width="20%">Detalle</th>
+                          <td>{{ object.detalle }}</td>
+                        </tr>
+                        <tr>
+                          <th width="20%">Cotización</th>
+                          <td>{{ object.cotiza }}</td>
+                        </tr>
+                        <tr>
+                          {% if object.ingreso > 0 %}
+                          <th width="20%">Compra</th>
+                          <td>$ {{ object.ingreso|floatformat:"2g" }}</td>
+                          {% endif %}
+                          {% if object.egreso > 0 %}
+                          <th width="20%">Venta</th>
+                          <td>$ {{ object.egreso|floatformat:"2g" }}</td>
+                          {% endif %}
+                        </tr>
+                        <tr>
+                          <th width="20%">Creado por</th>
+                          <td>{{ object.autor }}</td>
+                        </tr>
+                        <tr>
+                          <th width="20%">El día</th>
+                          <td>{{ object.action_time|date:'d/m/Y H:i' }}</td>
+                        </tr>
+
+                  </table>
+                  <table>
+                      <tr>
+                        <td><a type="button" class="btn btn-outline-danger" href="{% url 'EditarDolares' object.id %}">Editar</a></td>
+                        <td><a type="button" class="btn btn-outline-danger" href="{% url 'DolaresDelete' object.id %}">Eliminar</a></td>
+                        <td><a type="button" class="btn btn-secondary btn-me" href="{% url 'DetalleDolar' previo %}">Anterior</a></td>
+                        <td><a type="button"  class="btn btn-secondary btn-me" href="{% url 'Dolares' %}">Volver al listado</a></td>
+                        <td><a type="button" class="btn btn-secondary btn-me" href="{% url 'DetalleDolar' siguiente %}">Siguiente</a></td>
+                      </tr>
+                  </table>
+                
+              </div>
+          </div>
+      </div>
+
+      <div class="col-xl-4">
+          <div class="card rounded-3 text-black">
+              <div class="card-body p-md-5 mx-md-4">
+                  <h4 >Comprobante</h4>
+                  {% if object.comprobante %}
+                      <img src="{{object.comprobante.url}}" alt="" class="img-fluid">
+                  {% else %}
+                      <p>No se registran comprobantes</p>
+                  {% endif %}
+              </div>   
+          </div>
+      </div>
+      
+  </div>
+</div>
+
+{% endblock main %}
+
+

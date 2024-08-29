@@ -1,0 +1,60 @@
+{% extends 'AppZorro/base.html' %}
+
+{% load static %}
+
+{% block title %}El Zorrito | Caja {% endblock title %}
+
+{% block main %}
+
+<div class="container py-1 h-50">
+    <div id="todo" class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-xl-5">
+            <div class="card rounded-3 text-black">
+                <div class="card-body p-md-5 mx-md-4">
+                    <div class="text-center">
+                        <h2 class="mt-1 mb-3 pb-1">Eliminar movimiento en u$s</h2>
+                        <form method="POST">
+                            {% csrf_token %}
+                            <table class="table">
+                                <tbody>
+                                    <tr>
+                                    <th scope="row">Id</th>
+                                    <td>{{ object.id }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Fecha</th>
+                                        <td>{{ object.fecha|date:"d/m/Y" }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Detalle</th>
+                                        <td>{{ object.detalle }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Cotización</th>
+                                        <td>$ {{ object.cotiza|floatformat:"2g" }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Importe</th>
+                                        {% if object.ingreso > 0 %}
+                                            <td>u$s {{ object.ingreso|floatformat:"2g" }}</td>
+                                        {% endif %}
+                                        {% if object.egreso > 0 %}
+                                            <td>u$s {{ object.egreso|floatformat:"2g" }}</td>
+                                        {% endif %}
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <h6>¿Querés eliminar este movimiento?</h6>
+                            <input class="btn btn-outline-danger" type="submit" value="Eliminar">
+                            <a class="btn btn-success btn-me" href="{% url 'Dolares' %}">Volver</a>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock main %}
+
+
