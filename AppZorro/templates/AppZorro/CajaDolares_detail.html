@@ -11,7 +11,7 @@
     
       <div class="card rounded-3 text-black">
           <div class="card-body p-md-5 mx-md-4">
-              <h3 class="display-6">Movimiento de caja en u$s</h3>
+              <h3 class="display-6">Detalle de caja en u$s</h3>
                   <table class="table table-striped ">
                         <tr>
                           <th width="20%">Id</th>
@@ -26,9 +26,19 @@
                           <td>{{ object.detalle }}</td>
                         </tr>
                         <tr>
+                          <th width="20%">Cambio</th>
+                          {% if object.es_cambio == True %}
+                          <td><input class="form-check-input" type="checkbox" value="" id="defaultCheck1" checked></td>
+                          {% else %}
+                          <td><input class="form-check-input" type="checkbox" value="" id="defaultCheck1" disabled></td>
+                          {% endif %}
+                        </tr>
+                        {% if object.es_cambio == True %}
+                        <tr>
                           <th width="20%">Cotización</th>
                           <td>{{ object.cotiza }}</td>
                         </tr>
+                        {% endif %}
                         <tr>
                           {% if object.ingreso > 0 %}
                           <th width="20%">Compra</th>
@@ -46,6 +56,10 @@
                         <tr>
                           <th width="20%">El día</th>
                           <td>{{ object.action_time|date:'d/m/Y H:i' }}</td>
+                        </tr>
+                        <tr>
+                          <th width="20%">Obra</th>
+                          <td>{{ object.obra }}</td>
                         </tr>
 
                   </table>

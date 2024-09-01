@@ -12,8 +12,6 @@ from main import EnObra
 
 # Create your views here.
 
-
-
 #class Inicio(TemplateView):
 #    template_name = 'AppZorro/index.html'
 
@@ -47,10 +45,16 @@ class MovimientosListView(LoginRequiredMixin, ListView):
         queryset = super().get_queryset()
         saldo_parcial = 0
         for cuenta in queryset:
+            if hasattr(cuenta.conecta, 'id'):
+                cuenta.mandar = cuenta.conecta.id
+            else:
+                cuenta.mandar = 0
             saldo_parcial += cuenta.ingreso - cuenta.egreso
             cuenta.saldo_parcial = saldo_parcial
         return queryset
 
+    
+    
 
 class MovimientosDetailView(LoginRequiredMixin, DetailView):
     model = CajaPesos
@@ -63,6 +67,7 @@ class MovimientosDetailView(LoginRequiredMixin, DetailView):
 
         # No me funcionó usar ----> previo = CajaPesos.objects.filter(id__gt=id_actual).order_by('-id').first()
         objetos_ordenados = list(CajaPesos.objects.order_by('id'))
+        #objetos_ordenados = list(CajaPesos.objects.order_by('id').exclude(rubro_id=23))
 
         min = objetos_ordenados[0]
         max = objetos_ordenados[-1]
@@ -80,6 +85,7 @@ class MovimientosDetailView(LoginRequiredMixin, DetailView):
         if self.object.id == max:
             siguiente = max
         else:
+            #siguiente = CajaPesos.objects.filter(id__gt=id_actual).exclude(rubro_id=23).order_by('id').first()
             siguiente = CajaPesos.objects.filter(id__gt=id_actual).order_by('id').first()
             siguiente = siguiente.id
 
@@ -91,11 +97,12 @@ class MovimientosDetailView(LoginRequiredMixin, DetailView):
 
 class MovimientosCreateView(LoginRequiredMixin, CreateView):
     model = CajaPesos
-    fields = ['fecha', 'detalle', 'rubro', 'ingreso', 'egreso', 'comprobante']
+    fields = ['fecha', 'detalle', 'rubro', 'ingreso', 'egreso', 'cotiza', 'comprobante']
     success_url = reverse_lazy("Movimientos")
     
     def form_valid(self, form):
         form.instance.autor = self.request.user
+        form.instance.obra = Obra.objects.get(id=EnObra.get())
         return super().form_valid(form)
 
 
@@ -116,6 +123,7 @@ class MovimientosUpdateView(LoginRequiredMixin, UpdateView):
 
 class RubrosListView(LoginRequiredMixin, ListView):
     model = Rubros
+    queryset = Rubros.objects.exclude(titulo="Cambio Moneda")
 
 class RubrosCreateView(LoginRequiredMixin, CreateView):
     model = Rubros
@@ -196,38 +204,43 @@ class DolaresCreateView(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         form.instance.autor = self.request.user
         form.instance.es_cambio = False
-        form.instance.obra = Obra.objects.get(id=EnObra.consulta())
+        form.instance.obra = Obra.objects.get(id=EnObra.get())
         return super().form_valid(form)
     
 
 class DolaresVentaView(LoginRequiredMixin, CreateView):
-    model = CajaDolares
-    fields = ['fecha', 'detalle', 'egreso', 'cotiza']
+    model = CajaDolares 
+    fields = ['fecha', 'detalle', 'ingreso', 'egreso', 'cotiza']
     template_name = "AppZorro/CajaDolares_form_venta.html"
     success_url = reverse_lazy("Dolares")
     
     def form_valid(self, form):
+
         form.instance.autor = self.request.user
         form.instance.es_cambio = True
-        form.instance.obra = Obra.objects.get(id=EnObra.consulta())
-        nuevo_detalle = "Vendimos dolares a " + form.instance.detalle
-        form.instance.detalle = nuevo_detalle
-        return super().form_valid(form)
+        form.instance.obra = Obra.objects.get(id=EnObra.get())
 
+        if form.instance.egreso > 0:
+            nuevo_detalle = f"Vendimos u$s {int(form.instance.egreso)} a {form.instance.detalle}"
+        elif form.instance.ingreso > 0:
+            nuevo_detalle = f"Compramos u$s {int(form.instance.ingreso)} a {form.instance.detalle}"
+
+        form.instance.detalle = nuevo_detalle
+        form_limpio = form.cleaned_data
+        egreso_pesos = form_limpio['ingreso'] * form_limpio['cotiza'] 
+        ingreso_pesos = form_limpio['egreso'] * form_limpio['cotiza']
+
+        instancia_pesos = CajaPesos(fecha=form_limpio['fecha'], rubro=Rubros.objects.get(id=23), detalle=nuevo_detalle, ingreso=ingreso_pesos, egreso=egreso_pesos, cotiza=form_limpio['cotiza'], obra=Obra.objects.get(id=EnObra.get()), autor=self.request.user)
+        instancia_pesos.save() #graba en pesos
+        form.instance.conecta = instancia_pesos
+        self.object = form.save() #graba en dolares
+        instancia_pesos.conecta = self.object
+        print (instancia_pesos.conecta)
+        instancia_pesos.save()
+        return super().form_valid(form)
 
 class DolaresCompraView(LoginRequiredMixin, CreateView):
-    model = CajaDolares
-    fields = ['fecha', 'detalle' 'egreso', 'cotiza']
-    success_url = reverse_lazy("Dolares")
-    
-    def form_valid(self, form):
-        form.instance.autor = self.request.user
-        form.instance.es_cambio = True
-        form.instance.obra = Obra.objects.get(id=EnObra.consulta())
-        nuevo_detalle = "Vendimos dolares a " + form.instance.detalle
-        form.instance.detalle = nuevo_detalle
-        return super().form_valid(form)
-
+    pass
 
 class DolaresDeleteView(LoginRequiredMixin, DeleteView):
     model = CajaDolares

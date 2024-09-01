@@ -20,6 +20,7 @@
                             <th scope="col">Fecha</th>
                             <th scope="col">Detalle</th>
                             <th scope="col">Rubro</th>
+                            <th scope="col">Cotizacion</th>
                             <th scope="col">Ingresos</th>
                             <th scope="col">Egresos</th>
                             <th scope="col">Saldo</th>
@@ -34,12 +35,19 @@
                                 <td>{{ movimiento.fecha|date:"d/m/Y" }}</td>
                                 <td>{{ movimiento.detalle }}</td>
                                 <td>{{ movimiento.rubro }}</td>
-                                <td>$ {{ movimiento.ingreso|floatformat:"2g" }}</td>
-                                <td>$ {{ movimiento.egreso|floatformat:"2g" }}</td> 
-                                <td>$ {{ movimiento.saldo_parcial }}</td> 
+                                <td>{{ movimiento.cotiza }}</td>
+                                <td>$ {{ movimiento.ingreso|floatformat:"2g" }} </td>
+                                <td>$ {{ movimiento.egreso|floatformat:"2g" }} </td> 
+                                <td>$ {{ movimiento.saldo_parcial }} </td> 
+                                {% if movimiento.rubro_id == 23 %}
+                                <td><a class="bi bi-search" href="{% url 'DetalleDolar' movimiento.mandar %}"></a></td>  
+                                <td><a class="bi bi-pen" href="{% url 'EditarDolares' movimiento.mandar %}"></a></td> 
+                                <td><a class="bi bi-trash2" href="{% url 'MovimientosDelete' movimiento.id %}"></a></td> 
+                                {% else %}
                                 <td><a class="bi bi-search" href="{% url 'Detalles' movimiento.id %}"></a></td> 
                                 <td><a class="bi bi-pen" href="{% url 'EditarMovimiento' movimiento.id %}"></a></td> 
                                 <td><a class="bi bi-trash2" href="{% url 'MovimientosDelete' movimiento.id %}"></a></td> 
+                                {% endif %}
                             </tr>
                         {% empty %}
                             <tr><th><h6>Buuu... La caja está vacia.</h6></th></tr>

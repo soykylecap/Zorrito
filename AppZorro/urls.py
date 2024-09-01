@@ -29,7 +29,7 @@ urlpatterns += [
     path('dolares_create/', views.DolaresCreateView.as_view(), name="CrearDolares"),
     path('dolares_venta/', views.DolaresVentaView.as_view(), name="VentaDolares"),
     path('dolares_compra/', views.DolaresCompraView.as_view(), name="CompraDolares"),
-    path('dolares_update/<int:pk>/', views.DolaresUpdateView.as_view(), name="EditarDolares"),
-    path('dolares_detail/<int:pk>/', views.DolaresDetailView.as_view(), name="DetalleDolar"),
+    path("dolares_update/<int:pk>/", views.DolaresUpdateView.as_view(), name="EditarDolares"),
+    path("dolares_detail/<int:pk>/", views.DolaresDetailView.as_view(), name="DetalleDolar"),
     path('dolares_delete/<int:pk>/', views.DolaresDeleteView.as_view(), name="DolaresDelete"),
 ]

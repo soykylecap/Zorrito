@@ -1,3 +1,4 @@
+from typing import Any
 from django.db import models
 from django.contrib.auth.models import User
 from datetime import date
@@ -31,15 +32,17 @@ class Obra(models.Model):
 
 class CajaPesos(models.Model):
     fecha = models.DateField(default=date.today)
-    rubro = models.ForeignKey(Rubros, null=True, on_delete=models.SET_NULL)
+    rubro = models.ForeignKey(Rubros, null=True, on_delete=models.RESTRICT)
     detalle = models.CharField(max_length=60)
     ingreso = models.FloatField(default=0)
     egreso = models.FloatField(default=0)
-    valor_dolar = models.FloatField(default=DolarBlue.compra())
     comprobante = models.ImageField(upload_to='comprobantes', null=True, blank = True)
     obra = models.ForeignKey(Obra, null=True, on_delete=models.RESTRICT)
     autor = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.RESTRICT, null=True, blank=True, editable=False)
     action_time = models.DateTimeField(auto_now=True, editable=False)
+    cotiza = models.FloatField(default=DolarBlue.compra()) 
+    conecta = models.OneToOneField('CajaDolares', null=True, blank=True, on_delete=models.CASCADE)
+    
 
 class CajaDolares(models.Model):
     fecha = models.DateField(default=date.today)
@@ -51,6 +54,9 @@ class CajaDolares(models.Model):
     obra = models.ForeignKey(Obra, null=True, on_delete=models.RESTRICT)
     autor = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.RESTRICT, null=True, blank=True, editable=False)
     action_time = models.DateTimeField(auto_now=True, editable=False)
+    conecta = models.OneToOneField(CajaPesos, null=True, blank=True, on_delete=models.CASCADE)
+
+
 
 class Tarea(models.Model):
     fecha = models.DateField(default=date.today)
