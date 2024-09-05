@@ -22,10 +22,14 @@
                                 </tr>
                                 <tr>
                                     <th scope="row">{{ form.detalle.label }}</th>
+                                    {% if object.es_cambio == True %}
                                     <td>{{ form.detalle }}</td>
+                                    {% else %}
+                                    <td>{{ form.detalle }}</td>
+                                    {% endif %}
                                 </tr>
                                 <tr>
-                                    <th scope="row">{{ form.cotiza.label }}</th>
+                                    <th scope="row">Cotización</th>
                                     <td>{{ form.cotiza }}</td>
                                 </tr>
                                 <tr>
@@ -35,6 +39,10 @@
                                 <tr>
                                     <th scope="row">{{ form.egreso.label }}</th>
                                     <td>{{ form.egreso }}</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">En pesos</th>
+                                    <td>{{ en_pesos }}</td>
                                 </tr>
                             </tbody>
                         </table>

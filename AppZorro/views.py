@@ -1,5 +1,6 @@
 #from django.db.models.query import QuerySet
 #from django.http import HttpRequest, HttpResponse
+from django.http import HttpRequest, HttpResponse
 from django.views.generic import TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import ListView, DetailView, CreateView, DeleteView, UpdateView
@@ -198,7 +199,7 @@ class DolaresDetailView(LoginRequiredMixin, DetailView):
 
 class DolaresCreateView(LoginRequiredMixin, CreateView):
     model = CajaDolares
-    fields = ['fecha', 'detalle', 'ingreso', 'egreso']
+    fields = ['fecha', 'detalle', 'cotiza', 'ingreso', 'egreso']
     success_url = reverse_lazy("Dolares")
     
     def form_valid(self, form):
@@ -235,12 +236,9 @@ class DolaresVentaView(LoginRequiredMixin, CreateView):
         form.instance.conecta = instancia_pesos
         self.object = form.save() #graba en dolares
         instancia_pesos.conecta = self.object
-        print (instancia_pesos.conecta)
         instancia_pesos.save()
         return super().form_valid(form)
 
-class DolaresCompraView(LoginRequiredMixin, CreateView):
-    pass
 
 class DolaresDeleteView(LoginRequiredMixin, DeleteView):
     model = CajaDolares
@@ -253,4 +251,28 @@ class DolaresUpdateView(LoginRequiredMixin, UpdateView):
     fields = ['fecha', 'detalle', 'cotiza', 'ingreso', 'egreso']
     template_name = "AppZorro/CajaDolares_update.html"
 
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        context = self.get_context_data(object=self.object)
+        context['en_pesos'] = (self.object.ingreso + self.object.egreso) * self.object.cotiza
+        return self.render_to_response(context)
+
+    def form_valid(self, form):
+
+        instance = form.save(commit=False)  # No guardamos aún
+        
+        if instance.es_cambio:
+            objeto_pesos = instance.conecta  # Asume que conecta es una relación inversa
+            instance_pesos = CajaPesos(objeto_pesos.id)
+            instance_pesos.fecha = instance.fecha
+            instance_pesos.rubro = Rubros.objects.get(id=23)
+            instance_pesos.detalle = instance.detalle
+            instance_pesos.ingreso = instance.egreso * instance.cotiza
+            instance_pesos.egreso = instance.ingreso * instance.cotiza
+            instance_pesos.cotiza = instance.cotiza
+            instance_pesos.obra = Obra.objects.get(id=EnObra.get())
+            instance_pesos.autor = self.request.user
+            instance_pesos.conecta = self.object
+            instance_pesos.save()
+        return super().form_valid(form)
 
