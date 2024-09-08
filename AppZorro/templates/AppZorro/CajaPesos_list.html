@@ -40,13 +40,13 @@
                                 <td>$ {{ movimiento.egreso|floatformat:"2g" }} </td> 
                                 <td>$ {{ movimiento.saldo_parcial }} </td> 
                                 {% if movimiento.rubro_id == 23 %}
-                                <td><a class="bi bi-search" href="{% url 'DetalleDolar' movimiento.mandar %}"></a></td>  
-                                <td><a class="bi bi-pen" href="{% url 'EditarDolares' movimiento.mandar %}"></a></td> 
-                                <td><a class="bi bi-trash2" href="{% url 'MovimientosDelete' movimiento.id %}"></a></td> 
+                                <td><a class="bi bi-search text-success" href="{% url 'DetalleDolar' movimiento.mandar %}"></a></td>  
+                                <td><a class="bi bi-pen text-success" href="{% url 'EditarDolares' movimiento.mandar %}"></a></td> 
+                                <td><a class="bi bi-trash2 text-success" href="{% url 'MovimientosDelete' movimiento.id %}"></a></td> 
                                 {% else %}
-                                <td><a class="bi bi-search" href="{% url 'Detalles' movimiento.id %}"></a></td> 
-                                <td><a class="bi bi-pen" href="{% url 'EditarMovimiento' movimiento.id %}"></a></td> 
-                                <td><a class="bi bi-trash2" href="{% url 'MovimientosDelete' movimiento.id %}"></a></td> 
+                                <td><a class="bi bi-search text-dark" href="{% url 'Detalles' movimiento.id %}"></a></td> 
+                                <td><a class="bi bi-pen text-dark" href="{% url 'EditarMovimiento' movimiento.id %}"></a></td> 
+                                <td><a class="bi bi-trash2 text-dark" href="{% url 'MovimientosDelete' movimiento.id %}"></a></td> 
                                 {% endif %}
                             </tr>
                         {% empty %}
@@ -55,6 +55,35 @@
                         {% endfor %}
                     </tbody>
                 </table>
+                <nav aria-label="paginas caja">
+                    <ul class="pagination data-bs-theme=dark">
+                        {% if page_obj.has_previous %}
+                            <li class="page-item data-bs-theme="dark">
+                                <a class="page-link text-dark" href="?page={{ page_obj.previous_page_number }}">Anterior</a>
+                            </li>
+                        {% else %}
+                            <li class="page-item disabled">
+                                <a class="page-link text-dark" href="">Anterior</a>
+                            </li>
+                        {% endif %}
+                        {% for num in page_obj.paginator.page_range %}
+                            {% if num != page_obj.number %}
+                                <li class="page-item"><a class="page-link text-dark" href="?page={{ num }}">{{ num }}</a></li>
+                            {% else %}
+                                <li class="page-item active "><a class="page-link text-bg-dark" href="?page={{ num }}">{{ num }}</a></li>
+                            {% endif %}
+                        {% endfor %}
+                        {% if page_obj.has_next %}
+                        <li class="page-item">
+                            <a class="page-link text-dark" href="?page={{ page_obj.next_page_number }}">Siguiente</a>
+                        </li>
+                        {% else %}
+                        <li class="page-item disabled">
+                            <a class="page-link text-dark" href="">Siguiente</a>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </nav>
             </div>
         </div>
     </div>

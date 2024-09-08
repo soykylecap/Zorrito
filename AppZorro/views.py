@@ -41,6 +41,7 @@ class InicioListView(ListView):
 class MovimientosListView(LoginRequiredMixin, ListView):
     model = CajaPesos
     ordering = ["fecha"]
+    paginate_by = 10
 
     def get_queryset(self):
         queryset = super().get_queryset()
@@ -150,6 +151,7 @@ class RubrosUpdateView(LoginRequiredMixin, UpdateView):
 class DolaresListView(LoginRequiredMixin, ListView):
     model = CajaDolares
     ordering = ["fecha"]
+    paginate_by = 10
 
     def get_queryset(self):
         queryset = super().get_queryset()
