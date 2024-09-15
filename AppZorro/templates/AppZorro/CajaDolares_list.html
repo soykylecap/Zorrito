@@ -10,7 +10,7 @@
     <div class="col-xl-9">
         <div class="card rounded-3 text-black">
             <div class="card-body p-md-5 mx-md-4">
-                <h3 class="display-5 mb-3 pb-1">Caja en dolares</h3>
+                <h3 class="mb-3 pb-1">Caja en dolares</h3>
                 <div class="d-flex justify-content-end mb-3">
 
                     <div class="btn-group" role="group">
@@ -56,6 +56,17 @@
                             <th><h6>Que lindo seria para el Zorrito que ingrese algun pesito.</h6></th>
                         {% endfor %}
                     </tbody>
+                    <tr class="text-bg-light">
+                        <th scope="col"></th>
+                        <th scope="col">Totales</th>
+                        <th scope="col"></th>
+                        <th scope="col">$ {{ suma_ingreso }}</th>
+                        <th scope="col">$ {{ suma_egreso }}</th>
+                        <th scope="col">$ {{ saldo_final }}</th>
+                        <th scope="col"></th>
+                        <th scope="col"></th>
+                        <th scope="col"></th>
+                    </tr>
                 </table>
                 <nav aria-label="paginas caja">
                     <ul class="pagination data-bs-theme="dark">

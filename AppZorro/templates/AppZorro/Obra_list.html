@@ -2,7 +2,7 @@
 
 {% load static %}
 
-{% block title %}El Zorrito | Caja {% endblock title %}
+{% block title %}El Zorrito | Obras {% endblock title %}
 
 {% block main %}
 
@@ -12,20 +12,19 @@
     <div class="col-xl-9">
         <div class="card rounded-3 text-black">
             <div class="card-body p-md-5 mx-md-4">
-                <h3 class="mb-3 pb-1">Caja en pesos</h3>
+                <h3 class="mb-3 pb-1">Obras</h3>
                 <div class="d-flex justify-content-end mb-3">
                     <a class="btn btn-dark px-3" type="button" href="{% url 'CrearMovimiento' %}">Agregar nuevo</a>
                 </div>
                 <table class="text-center table table-striped table-bordered ">
                     <thead class="thead-primary">
                         <tr class="text-bg-dark p-3">
-                            <th scope="col">Fecha</th>
-                            <th scope="col">Detalle</th>
-                            <th scope="col">Rubro</th>
-                            <th scope="col">Cotizacion</th>
-                            <th scope="col">Ingresos</th>
-                            <th scope="col">Egresos</th>
-                            <th scope="col">Saldo</th>
+                            <th scope="col">Fecha inicio</th>
+                            <th scope="col">Nombre</th>
+                            <th scope="col">Cubiertos</th>
+                            <th scope="col">Semicubiertos</th>
+                            <th scope="col">Total</th>
+                            <th scope="col">Presupuesto</th>
                             <th scope="col" class="bi bi-search"></th>
                             <th scope="col" class="bi bi-pen"></th>
                             <th scope="col" class="bi bi-trash2"></th>
@@ -33,35 +32,29 @@
 
                     </thead>
                     <tbody>
-                        {% for movimiento in object_list %}
+                        {% for obra in object_list %}
                             <tr>
-                                <td>{{ movimiento.fecha|date:"d/m/Y" }}</td>
-                                <td><a href="{% url 'DetalleDolar' movimiento.mandar %}"></a>{{ movimiento.detalle }}</td>
-                                <td>{{ movimiento.rubro }}</td>
-                                <td>{{ movimiento.cotiza }}</td>
-                                <td>$ {{ movimiento.ingreso|floatformat:"2g" }} </td>
-                                <td>$ {{ movimiento.egreso|floatformat:"2g" }} </td> 
-                                <td>$ {{ movimiento.saldo_parcial }} </td> 
-                                <td><a class="bi bi-search text-dark" href="{% url 'Detalles' movimiento.id %}"></a></td> 
-                                {% if movimiento.rubro_id == 23 %}  
-                                <td><a class="bi bi-pen text-success" href="{% url 'EditarDolares' movimiento.mandar %}"></a></td> 
-                                {% else %}
-                                <td><a class="bi bi-pen text-dark" href="{% url 'EditarMovimiento' movimiento.id %}"></a></td> 
-                                {% endif %}
-                                <td><a class="bi bi-trash2 text-dark" href="{% url 'MovimientosDelete' movimiento.id %}"></a></td> 
+                                <td>{{ obra.fecha_inicio|date:"d/m/Y" }}</td>
+                                <td>{{ obra.nombre }}</td>
+                                <td>{{ obra.m2_cubiertos|floatformat:"2g" }} m2</td>
+                                <td>{{ obra.m2_semicubiertos|floatformat:"2g" }} m2</td>
+                                <td>{{ obra.m2_total|floatformat:"2g" }} m2</td>
+                                <td>$ {{ obra.presupuesto_inicial|floatformat:"2g" }} </td> 
+                                <td><a class="bi bi-search text-success" href="{% url 'DetalleObra' obra.id %}"></a></td> 
+                                <td><a class="bi bi-pen text-dark" href=""></a></td> 
+                                <td><a class="bi bi-trash2 text-dark" href=""></a></td> 
                             </tr>
                         {% empty %}
-                            <tr><th><h6>Buuu... La caja está vacia.</h6></th></tr>
+                            <tr><th><h6>Buuu... No hay obras.</h6></th></tr>
                             <th><h6>Que lindo seria para el Zorrito que ingrese algun pesito.</h6></th>
                         {% endfor %}
                     </tbody>
                     <tr class="text-bg-light">
                         <th scope="col"></th>
-                        <th scope="col"></th>
                         <th scope="col">Totales</th>
                         <th scope="col"></th>
-                        <th scope="col">$ {{ suma_ingreso }}</th>
-                        <th scope="col">$ {{ suma_egreso }}</th>
+                        <th scope="col">{{ suma_ingreso }}</th>
+                        <th scope="col">{{ suma_egreso }}</th>
                         <th scope="col">$ {{ saldo_final }}</th>
                         <th scope="col"></th>
                         <th scope="col"></th>

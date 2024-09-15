@@ -61,7 +61,13 @@ class CajaDolares(models.Model):
 class Tarea(models.Model):
     fecha = models.DateField(default=date.today)
     tarea = models.CharField(max_length=40)
+    rubro = models.ForeignKey(Rubros, null=True, on_delete=models.RESTRICT)
     opciones_porcentaje = [(25, '25%'), (50, '50%'), (75, '75%'), (100, '100%')]
     porcentaje = models.IntegerField(choices=(opciones_porcentaje), default=100)
     cant_operarios = models.IntegerField(default=2)
+    indice_jornada = models.FloatField(default=1)
     obra = models.ForeignKey(Obra, null=True, on_delete=models.RESTRICT)
+    autor = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.RESTRICT, null=True, blank=True, editable=False)
+
+    def __str__(self):
+        return self.tarea

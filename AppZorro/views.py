@@ -1,20 +1,18 @@
 #from django.db.models.query import QuerySet
 #from django.http import HttpRequest, HttpResponse
-from django.http import HttpRequest, HttpResponse
+#from django.http import HttpRequest, HttpResponse
 from django.views.generic import TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import ListView, DetailView, CreateView, DeleteView, UpdateView
-from AppZorro.models import CajaPesos, Rubros, CajaDolares, Obra
+from AppZorro.models import CajaPesos, Rubros, CajaDolares, Obra, Tarea
 from django.urls import reverse_lazy
+from django.db.models import Sum
 from dolar import DolarBlue
 from main import EnObra
+from AppZorro.graficos import grafico_torta, survey
 
-#from django.conf import settings
 
-# Create your views here.
 
-#class Inicio(TemplateView):
-#    template_name = 'AppZorro/index.html'
 
 class About(TemplateView):
     template_name = 'AppZorro/about.html'
@@ -54,9 +52,19 @@ class MovimientosListView(LoginRequiredMixin, ListView):
             saldo_parcial += cuenta.ingreso - cuenta.egreso
             cuenta.saldo_parcial = saldo_parcial
         return queryset
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        suma_egreso = CajaPesos.objects.all().aggregate(Sum('egreso'))
+        suma_ingreso = CajaPesos.objects.all().aggregate(Sum('ingreso'))
+        context['saldo_final'] = suma_ingreso['ingreso__sum'] - suma_egreso['egreso__sum']
+        context['suma_egreso'] = suma_egreso['egreso__sum']
+        context['suma_ingreso'] = suma_ingreso['ingreso__sum']
+        context['dolar_compra'] = DolarBlue.compra()
+        context['dolar_venta'] = DolarBlue.venta()
+        return context
 
-    
-    
+
 
 class MovimientosDetailView(LoginRequiredMixin, DetailView):
     model = CajaPesos
@@ -121,11 +129,47 @@ class MovimientosUpdateView(LoginRequiredMixin, UpdateView):
 
 
 
+
 #Vistas para Rubros
 
 class RubrosListView(LoginRequiredMixin, ListView):
     model = Rubros
-    queryset = Rubros.objects.exclude(titulo="Cambio Moneda")
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        for rubro in queryset:
+            suma_egreso= CajaPesos.objects.filter(rubro_id=rubro).aggregate(Sum('egreso'))
+            suma_ingreso= CajaPesos.objects.filter(rubro_id=rubro).aggregate(Sum('ingreso'))
+            rubro.suma_egreso = suma_egreso['egreso__sum']
+            rubro.suma_ingreso = suma_ingreso['ingreso__sum']
+            #labels += rubro.titulo
+            #sizes += rubro.suma_egreso
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        ingresos = CajaPesos.objects.aggregate(Sum('ingreso'))
+        egresos = CajaPesos.objects.aggregate(Sum('egreso'))
+        context['ingresos'] = ingresos['ingreso__sum']
+        context['egresos'] = egresos['egreso__sum']
+        context['saldo'] = ingresos['ingreso__sum'] - egresos['egreso__sum']
+
+        queryset = context['object_list']
+
+        labels = list()
+        sizes = []
+        for rubro in queryset:
+            suma_egreso= CajaPesos.objects.filter(rubro_id=rubro).aggregate(Sum('egreso'))
+            suma_egreso_valor = suma_egreso.get('egreso__sum', 0)
+            rubro.suma_egreso = float(suma_egreso_valor) if suma_egreso_valor else 0
+            if rubro.suma_egreso and rubro.id != 23:
+                labels.append(rubro.titulo)
+                sizes.append(float(rubro.suma_egreso))
+        uri = grafico_torta(labels, sizes)
+        context['grafico'] = uri
+
+        return context
+
 
 class RubrosCreateView(LoginRequiredMixin, CreateView):
     model = Rubros
@@ -160,6 +204,17 @@ class DolaresListView(LoginRequiredMixin, ListView):
             saldo_parcial += cuenta.ingreso - cuenta.egreso
             cuenta.saldo_parcial = saldo_parcial
         return queryset
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        suma_egreso = CajaDolares.objects.all().aggregate(Sum('egreso'))
+        suma_ingreso = CajaDolares.objects.all().aggregate(Sum('ingreso'))
+        context['saldo_final'] = suma_ingreso['ingreso__sum'] - suma_egreso['egreso__sum']
+        context['suma_egreso'] = suma_egreso['egreso__sum']
+        context['suma_ingreso'] = suma_ingreso['ingreso__sum']
+        context['dolar_compra'] = DolarBlue.compra()
+        context['dolar_venta'] = DolarBlue.venta()
+        return context
 
 
 class DolaresDetailView(LoginRequiredMixin, DetailView):
@@ -260,9 +315,7 @@ class DolaresUpdateView(LoginRequiredMixin, UpdateView):
         return self.render_to_response(context)
 
     def form_valid(self, form):
-
         instance = form.save(commit=False)  # No guardamos aún
-        
         if instance.es_cambio:
             objeto_pesos = instance.conecta  # Asume que conecta es una relación inversa
             instance_pesos = CajaPesos(objeto_pesos.id)
@@ -278,3 +331,37 @@ class DolaresUpdateView(LoginRequiredMixin, UpdateView):
             instance_pesos.save()
         return super().form_valid(form)
 
+
+#Vistas para Obras
+
+class ObraListView(LoginRequiredMixin, ListView):
+    model = Obra
+
+class ObraDetailView(LoginRequiredMixin, DetailView):
+    model = Obra
+
+
+#Vistas para Tareas
+
+class TareaListView(LoginRequiredMixin, ListView):
+    model = Tarea
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
+    
+
+class TareaDetailView(LoginRequiredMixin, DetailView):
+    model = Tarea
+
+class TareaCreateView(LoginRequiredMixin, CreateView):
+    model = Tarea
+    fields = ['fecha', 'tarea', 'rubro', 'porcentaje', 'cant_operarios']
+    success_url = reverse_lazy("Tareas")
+
+    def form_valid(self, form):
+        print (form.instance.porcentaje)
+        form.instance.indice_jornada = 1 * form.instance.cant_operarios * (form.instance.porcentaje / 100)
+        form.instance.autor = self.request.user
+        form.instance.obra = Obra.objects.get(id=EnObra.get())
+        return super().form_valid(form)

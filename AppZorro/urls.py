@@ -32,3 +32,19 @@ urlpatterns += [
     path("dolares_detail/<int:pk>/", views.DolaresDetailView.as_view(), name="DetalleDolar"),
     path('dolares_delete/<int:pk>/', views.DolaresDeleteView.as_view(), name="DolaresDelete"),
 ]
+
+urlpatterns += [
+    path('obra_list/', views.ObraListView.as_view(), name="Obras"),
+    path("obra_detail/<int:pk>/", views.ObraDetailView.as_view(), name="DetalleObra"),
+    # path('rubros_create/', views.RubrosCreateView.as_view(), name="CrearRubro"),
+    # path('rubros_update/<int:pk>/', views.RubrosUpdateView.as_view(), name="EditarRubro"),
+    # path('rubros_delete/<int:pk>/', views.RubrosDeleteView.as_view(), name="BorrarRubro"),
+]
+
+urlpatterns += [
+    path('tarea_list/', views.TareaListView.as_view(), name="Tareas"),
+    path("tarea_detail/<int:pk>/", views.TareaDetailView.as_view(), name="DetalleTarea"),
+    path('tarea_create/', views.TareaCreateView.as_view(), name="CrearTarea"),
+    # path('rubros_update/<int:pk>/', views.RubrosUpdateView.as_view(), name="EditarRubro"),
+    # path('rubros_delete/<int:pk>/', views.RubrosDeleteView.as_view(), name="BorrarRubro"),
+]

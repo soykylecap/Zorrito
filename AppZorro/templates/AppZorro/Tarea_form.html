@@ -1,0 +1,51 @@
+{% extends 'AppZorro/base.html' %}
+
+{% load static %}
+
+{% block title %}El Zorrito | Tarea {% endblock title %}
+
+{% block main %}
+
+<div id="todo" class="row d-flex justify-content-center align-items-center h-100">
+    <div class="col-xl-5">
+        <div class="card rounded-3 text-black">
+            <div class="card-body p-md-5 mx-md-4">
+                <h3 class="display-5 mb-3 pb-1">Nuevo tarea</h3>
+                <form action="" method="POST" enctype="multipart/form-data">
+                    <div data-mdb-input-init class="form-outline mb-4">
+                    {% csrf_token %}
+                    <table class="table table-striped">
+                        <tbody>
+                            <tr>
+                                <th scope="row">{{ form.fecha.label }}</th>
+                                <td>{{ form.fecha }}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">{{ form.tarea.label }}</th>
+                                <td>{{ form.tarea }}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">{{ form.rubro.label }}</th>
+                                <td>{{ form.rubro }}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">{{ form.porcentaje.label }}</th>
+                                <td>{{ form.porcentaje }}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">{{ form.cant_operarios.label }}</th>
+                                <td>{{ form.cant_operarios }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <input class="btn btn-secondary btn-me" type="submit" value="Guardar">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock main %}
+
+

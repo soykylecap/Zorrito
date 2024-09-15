@@ -2,7 +2,7 @@
 
 {% load static %}
 
-{% block title %}El Zorrito | Caja {% endblock title %}
+{% block title %}El Zorrito | Obras {% endblock title %}
 
 {% block main %}
 
@@ -11,23 +11,23 @@
     
       <div class="card rounded-3 text-black">
           <div class="card-body p-md-5 mx-md-4">
-              <h3 class="display-6">Movimiento de caja</h3>
+              <h3 class="display-6">Detalle de obra</h3>
                   <table class="table table-striped ">
                         <tr>
                           <th width="20%">Id</th>
                           <td>{{ object.id }}</td>
                         </tr>
                         <tr>
-                          <th width="20%">Fecha</th>
-                          <td>{{ object.fecha|date:"d/m/Y" }}</td>
+                          <th width="20%">Fecha de inicio</th>
+                          <td>{{ object.fecha_inicio|date:"d/m/Y" }}</td>
                         </tr>
                         <tr>
-                          <th width="20%">Detalle</th>
-                          <td>{{ object.detalle }}</td>
+                          <th width="20%">Nombre</th>
+                          <td>{{ object.nombre }}</td>
                         </tr>
                         <tr>
-                          <th width="20%">Rubro</th>
-                          <td>{{ object.rubro }}</td>
+                          <th width="20%">Cubiertos</th>
+                          <td>{{ object.m2_cubiertos }} m2</td>
                         </tr>
                         <tr>
                           {% if object.ingreso > 0 %}
@@ -51,14 +51,14 @@
                   <table>
                       <tr>
                         {% if object.rubro.titulo == "Cambio Moneda" %}
-                        <td><a type="button" class="btn btn-outline-danger" href="{% url 'EditarDolares' object.conecta.id %}">Editar</a></td>
+                        <td><a type="button" class="btn btn-outline-danger" href="">Editar</a></td>
                         {% else %}
-                        <td><a type="button" class="btn btn-outline-danger" href="{% url 'EditarMovimiento' object.id %}">Editar</a></td>
+                        <td><a type="button" class="btn btn-outline-danger" href="">Editar</a></td>
                         {% endif %}
-                        <td><a type="button" class="btn btn-outline-danger" href="{% url 'MovimientosDelete' object.id %}">Eliminar</a></td>
-                        <td><a type="button" class="btn btn-secondary btn-me" href="{% url 'Detalles' previo %}">Anterior</a></td>
-                        <td><a type="button"  class="btn btn-secondary btn-me" href="{% url 'Movimientos' %}">Volver al listado</a></td>
-                        <td><a type="button" class="btn btn-secondary btn-me" href="{% url 'Detalles' siguiente %}">Siguiente</a></td>
+                        <td><a type="button" class="btn btn-outline-danger" href="">Eliminar</a></td>
+                        <td><a type="button" class="btn btn-secondary btn-me" href="">Anterior</a></td>
+                        <td><a type="button"  class="btn btn-secondary btn-me" href="{% url 'Obras' %}">Volver al listado</a></td>
+                        <td><a type="button" class="btn btn-secondary btn-me" href="">Siguiente</a></td>
                       </tr>
                   </table>
                 
