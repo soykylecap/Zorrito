@@ -6,7 +6,8 @@ urlpatterns = [
     
     #path('', views.Inicio.as_view(), name="Inicio"),
     path('about/', views.About.as_view(), name="About"),
-    path('', views.InicioListView.as_view(), name="Inicio"),
+    path('', views.InicioTemplateView.as_view(), name="Inicio"),
+    path('copia', views.InicioListView.as_view(), name="InicioCopia"),
 ]
 
 urlpatterns += [
@@ -36,9 +37,9 @@ urlpatterns += [
 urlpatterns += [
     path('obra_list/', views.ObraListView.as_view(), name="Obras"),
     path("obra_detail/<int:pk>/", views.ObraDetailView.as_view(), name="DetalleObra"),
-    # path('rubros_create/', views.RubrosCreateView.as_view(), name="CrearRubro"),
-    # path('rubros_update/<int:pk>/', views.RubrosUpdateView.as_view(), name="EditarRubro"),
-    # path('rubros_delete/<int:pk>/', views.RubrosDeleteView.as_view(), name="BorrarRubro"),
+    path('obra_create/', views.ObraCreateView.as_view(), name="CrearObra"),
+    path('obra_update/<int:pk>/', views.ObraUpdateView.as_view(), name="EditarObra"),
+    path('obra_delete/<int:pk>/', views.ObraDeleteView.as_view(), name="BorrarObra"),
 ]
 
 urlpatterns += [

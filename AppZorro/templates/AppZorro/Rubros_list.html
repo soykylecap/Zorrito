@@ -18,7 +18,7 @@
                 </div>
                 
                 {{ fijaciones }} {{ titulo }}
-                    <table class="text-center table table-striped table-bordered">
+                    <table class="text-center table table-striped table-sm table-bordered">
                         <thead class="thead-primary">
                             <tr class="text-bg-info p-3">
                                 <th scope="col">Rubro</th>
@@ -35,8 +35,8 @@
                                     <td>{{ rubro.suma_ingreso }}</td>
                                     <td>{{ rubro.suma_egreso }}</td>
                                     {% if rubro.id != 23 %}
-                                    <td><a class="bi bi-pen" href="{% url 'EditarRubro' rubro.id %}"></a></td> 
-                                    <td><a class="bi bi-trash2" href="{% url 'BorrarRubro' rubro.id %}"></a></td> 
+                                    <td><a class="bi bi-pen text-dark" href="{% url 'EditarRubro' rubro.id %}"></a></td> 
+                                    <td><a class="bi bi-trash2 text-dark" href="{% url 'BorrarRubro' rubro.id %}"></a></td> 
                                     {% else %}
                                     <td></td> 
                                     <td></td> 
@@ -55,7 +55,7 @@
         <div class="card rounded-3 text-black">
             <div class="card-body p-md-5">
                 <p class="display-6">Resumen</p>
-            <table class="text-center table table-striped table-bordered">
+            <table class="text-center table table-hover table-bordered">
                 <thead class="thead-primary">
                     <tr class="text-bg-info p-3">
                         <th scope="col">Concepto</th>

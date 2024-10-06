@@ -30,32 +30,37 @@
                           <td>{{ object.m2_cubiertos }} m2</td>
                         </tr>
                         <tr>
-                          {% if object.ingreso > 0 %}
-                          <th width="20%">Ingreso</th>
-                          <td>$ {{ object.ingreso|floatformat:"2g" }}</td>
-                          {% endif %}
-                          {% if object.egreso > 0 %}
-                          <th width="20%">Gasto</th>
-                          <td>$ {{ object.egreso|floatformat:"2g" }}</td>
-                          {% endif %}
+                          <th width="20%">Semicubiertos</th>
+                          <td>{{ object.m2_semicubiertos }} m2</td>
                         </tr>
                         <tr>
-                          <th width="20%">Creado por</th>
-                          <td>{{ object.autor }}</td>
+                          <th width="20%">Totales</th>
+                          <td>{{ m2_totales }} m2</td>
                         </tr>
                         <tr>
-                          <th width="20%">El día</th>
-                          <td>{{ object.action_time|date:'d/m/Y H:i' }}</td>
+                          <th width="20%">Tiempo estimado</th>
+                          <td>{{ object.dias_estimados }} dias</td>
+                        </tr>
+                        <tr>
+                          <th width="20%">Tiempo de obra</th>
+                          <td>{{ dias_obra }} dias</td>
+                        </tr>
+                        <tr>
+                          <th width="20%">Presupuesto</th>
+                          <td>u$s {{ object.presupuesto_inicial }}</td>
+                        </tr>
+                          <th width="20%">Costo Final</th>
+                          <td>{{ costo_final }}</td>
+                        </tr>
+                        </tr>
+                          <th width="20%">Ganancia</th>
+                          <td>u$s {{ ganancia|floatformat:"2g" }}</td>
                         </tr>
                   </table>
                   <table>
                       <tr>
-                        {% if object.rubro.titulo == "Cambio Moneda" %}
-                        <td><a type="button" class="btn btn-outline-danger" href="">Editar</a></td>
-                        {% else %}
-                        <td><a type="button" class="btn btn-outline-danger" href="">Editar</a></td>
-                        {% endif %}
-                        <td><a type="button" class="btn btn-outline-danger" href="">Eliminar</a></td>
+                        <td><a type="button" class="btn btn-outline-danger" href="{% url 'EditarObra' obra.id %}">Editar</a></td>
+                        <td><a type="button" class="btn btn-outline-danger" href="{% url 'BorrarObra' obra.id %}">Eliminar</a></td>
                         <td><a type="button" class="btn btn-secondary btn-me" href="">Anterior</a></td>
                         <td><a type="button"  class="btn btn-secondary btn-me" href="{% url 'Obras' %}">Volver al listado</a></td>
                         <td><a type="button" class="btn btn-secondary btn-me" href="">Siguiente</a></td>
@@ -64,21 +69,7 @@
                 
               </div>
           </div>
-      </div>
-
-      <div class="col-xl-4">
-          <div class="card rounded-3 text-black">
-              <div class="card-body p-md-5 mx-md-4">
-                  <h4 >Comprobante</h4>
-                  {% if object.comprobante %}
-                      <img src="{{object.comprobante.url}}" alt="" class="img-fluid">
-                  {% else %}
-                      <p>No se registran comprobantes</p>
-                  {% endif %}
-              </div>   
-          </div>
-      </div>
-      
+      </div>      
   </div>
 </div>
 

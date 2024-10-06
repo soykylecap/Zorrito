@@ -16,7 +16,7 @@
                 <div class="d-flex justify-content-end mb-3">
                     <a class="btn btn-dark px-3" type="button" href="{% url 'CrearMovimiento' %}">Agregar nuevo</a>
                 </div>
-                <table class="text-center table table-striped table-bordered ">
+                <table class="text-center table table-striped table-bordered table-sm">
                     <thead class="thead-primary">
                         <tr class="text-bg-dark p-3">
                             <th scope="col">Fecha</th>
@@ -34,7 +34,11 @@
                     </thead>
                     <tbody>
                         {% for movimiento in object_list %}
-                            <tr>
+                        {% if movimiento.rubro_id == 23 %} 
+                            <tr class="table-success">
+                        {% else %}
+                            <tr>  
+                        {% endif %}
                                 <td>{{ movimiento.fecha|date:"d/m/Y" }}</td>
                                 <td><a href="{% url 'DetalleDolar' movimiento.mandar %}"></a>{{ movimiento.detalle }}</td>
                                 <td>{{ movimiento.rubro }}</td>

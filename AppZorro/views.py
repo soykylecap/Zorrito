@@ -1,12 +1,13 @@
 #from django.db.models.query import QuerySet
-#from django.http import HttpRequest, HttpResponse
-#from django.http import HttpRequest, HttpResponse
+
+from django.http import HttpRequest, HttpResponse
 from django.views.generic import TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib import messages
 from django.views.generic import ListView, DetailView, CreateView, DeleteView, UpdateView
 from AppZorro.models import CajaPesos, Rubros, CajaDolares, Obra, Tarea
 from django.urls import reverse_lazy
-from django.db.models import Sum
+from django.db.models import Sum, RestrictedError
 from dolar import DolarBlue
 from main import EnObra
 from AppZorro.graficos import grafico_torta, survey
@@ -19,7 +20,7 @@ class About(TemplateView):
 
 class InicioListView(ListView):
     model = CajaPesos
-    template_name = 'AppZorro/index.html'
+    template_name = 'AppZorro/index_copia.html'
 
     def get_context_data(self, **kwargs):
         
@@ -32,6 +33,45 @@ class InicioListView(ListView):
         context['total_registros'] = total_registros
 
         return context
+
+
+class SumasYSaldo:
+    def __init__(self, modelo):
+        self.modelo = modelo
+        # self.orden = orden
+        # self.filtro = filtro
+        # self.campos = campos
+        # self.cantidad = cantidad
+
+    def get(self):
+        
+        #.values('fecha', 'detalle', 'egreso', 'ingreso')
+        egresos = self.modelo.objects.all().aggregate(Sum('egreso'))
+        ingresos = self.modelo.objects.all().aggregate(Sum('ingreso'))
+        sumas_saldo = dict()
+        sumas_saldo['datos'] = self.modelo.objects.order_by('-fecha').filter(obra=EnObra.get())[:5]
+        sumas_saldo['egresos'] = egresos['egreso__sum']
+        sumas_saldo['ingresos'] = ingresos['ingreso__sum']
+        sumas_saldo['saldos'] = ingresos['ingreso__sum'] - egresos['egreso__sum']
+        return sumas_saldo
+
+
+
+class InicioTemplateView(TemplateView):
+    template_name = 'AppZorro/index.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['obra'] =  Obra.objects.get(id=EnObra.get())
+
+        pesos = SumasYSaldo(CajaPesos)
+        dolares = SumasYSaldo(CajaDolares)
+        context['pesos'] = pesos.get()
+        context['dolares'] = dolares.get()
+
+
+        return context
+
 
 
 #Vistas para CajaPesos
@@ -334,11 +374,64 @@ class DolaresUpdateView(LoginRequiredMixin, UpdateView):
 
 #Vistas para Obras
 
+class ObraCreateView(LoginRequiredMixin, CreateView):
+    model = Obra
+    fields = ['fecha_inicio', 'nombre', 'm2_cubiertos', 'm2_semicubiertos', 'dias_estimados', 'presupuesto_inicial']
+    success_url = reverse_lazy("Obras")
+    
+    def form_valid(self, form):
+        form.instance.m2_total = form.instance.m2_cubiertos + form.instance.m2_semicubiertos
+        return super().form_valid(form)
+
+class ObraUpdateView(LoginRequiredMixin, UpdateView):
+    model = Obra
+    success_url = reverse_lazy("Obras")
+    fields = ['fecha_inicio', 'nombre', 'm2_cubiertos', 'm2_semicubiertos', 'dias_estimados', 'presupuesto_inicial']
+    template_name = "AppZorro/Obra_update.html"
+
+    def form_valid(self, form):
+        form.instance.m2_total = form.instance.m2_cubiertos + form.instance.m2_semicubiertos
+        return super().form_valid(form)
+
+class ObraDeleteView(LoginRequiredMixin, DeleteView):
+    model = Obra
+    success_url = reverse_lazy("Obras")
+
+    def post(self, request: HttpRequest, *args, **kwargs) -> HttpResponse:
+        
+        try:
+            return super().post(request, *args, **kwargs)
+        except RestrictedError:
+            form = self.get_form()
+            #print (f'ESTO ES {form}')
+            messages.error(self.request, "No se puede eliminar esta obra porque tiene movimientos asociados.")
+
+            
+        
+            return self.form_invalid(form)
+
+
+
+
+
 class ObraListView(LoginRequiredMixin, ListView):
     model = Obra
 
 class ObraDetailView(LoginRequiredMixin, DetailView):
     model = Obra
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        dias = Tarea.objects.count()
+        costo = CajaPesos.objects.aggregate(total_sum=Sum('egreso'))
+        costo = costo['total_sum']
+        presupuesto = context['object'].presupuesto_inicial
+        ganancia = presupuesto - (costo / DolarBlue.venta())
+        context['m2_totales'] = context['object'].m2_cubiertos + context['object'].m2_semicubiertos
+        context['dias_obra'] = dias
+        context['costo_final'] = costo
+        context['ganancia'] = ganancia
+        return context
 
 
 #Vistas para Tareas

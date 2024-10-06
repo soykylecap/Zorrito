@@ -1,0 +1,35 @@
+{% extends 'AppZorro/base.html' %}
+
+{% load static %}
+
+{% block title %}El Zorrito | Editar obra {% endblock title %}
+
+{% block main %}
+
+<div id="todo" class="row d-flex justify-content-center align-items-center h-100">
+    <div class="col-xl-5">
+        <div class="card rounded-3 text-black">
+            <div class="card-body p-md-5 mx-md-4">
+                <h3 class="display-6 mb-3 pb-1">Modificar Obra</h3>
+
+                <div class="text-center">
+                    <form action="" method="POST" enctype="multipart/form-data">
+                      <p class="fs-5 fw-bold">{{ msg_register }}</p>
+                      <div data-mdb-input-init class="form-outline mb-4">
+                        {% csrf_token %}
+                        <table class="table table-striped ">
+                          {{ form.as_table }}
+                        </table>
+                        <a class="btn btn-secondary btn-me" href="{% url 'Obras' %}">Volver</a>
+                        <input class="btn btn-secondary btn-me" type="submit" value="Guardar cambios">
+                      </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock main %}
+
+

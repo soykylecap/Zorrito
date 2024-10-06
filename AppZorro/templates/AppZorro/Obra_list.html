@@ -1,20 +1,15 @@
 {% extends 'AppZorro/base.html' %}
-
 {% load static %}
-
 {% block title %}El Zorrito | Obras {% endblock title %}
-
 {% block main %}
 
-
 <div class="row d-flex justify-content-center align-items-center h-50">
-    
     <div class="col-xl-9">
         <div class="card rounded-3 text-black">
             <div class="card-body p-md-5 mx-md-4">
                 <h3 class="mb-3 pb-1">Obras</h3>
                 <div class="d-flex justify-content-end mb-3">
-                    <a class="btn btn-dark px-3" type="button" href="{% url 'CrearMovimiento' %}">Agregar nuevo</a>
+                    <a class="btn btn-dark px-3" type="button" href="{% url 'CrearObra' %}">Agregar nuevo</a>
                 </div>
                 <table class="text-center table table-striped table-bordered ">
                     <thead class="thead-primary">
@@ -40,9 +35,9 @@
                                 <td>{{ obra.m2_semicubiertos|floatformat:"2g" }} m2</td>
                                 <td>{{ obra.m2_total|floatformat:"2g" }} m2</td>
                                 <td>$ {{ obra.presupuesto_inicial|floatformat:"2g" }} </td> 
-                                <td><a class="bi bi-search text-success" href="{% url 'DetalleObra' obra.id %}"></a></td> 
-                                <td><a class="bi bi-pen text-dark" href=""></a></td> 
-                                <td><a class="bi bi-trash2 text-dark" href=""></a></td> 
+                                <td><a class="bi bi-search text-dark" href="{% url 'DetalleObra' obra.id %}"></a></td> 
+                                <td><a class="bi bi-pen text-dark" href="{% url 'EditarObra' obra.id %}"></a></td> 
+                                <td><a class="bi bi-trash2 text-dark" href="{% url 'BorrarObra' obra.id %}"></a></td> 
                             </tr>
                         {% empty %}
                             <tr><th><h6>Buuu... No hay obras.</h6></th></tr>
@@ -97,5 +92,4 @@
         </div>
     </div>
 </div>
-
 {% endblock main %}

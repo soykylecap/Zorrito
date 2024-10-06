@@ -21,10 +21,8 @@ class Obra(models.Model):
     m2_semicubiertos = models.FloatField(default=0.00)
     m2_total = models.FloatField(default=0.00, editable=False)
     dias_estimados = models.IntegerField(default=30)
-    dias_final = models.IntegerField(default=0)
     presupuesto_inicial = models.FloatField()
-    costo_final = models.FloatField()
-    ganancia = models.FloatField()
+
 
     def __str__(self) -> str:
         return self.nombre

@@ -1,0 +1,44 @@
+{% extends 'AppZorro/base.html' %}
+
+{% load static %}
+
+{% block title %}El Zorrito | Eliminar {% endblock title %}
+
+{% block main %}
+
+<div class="container py-1 h-50">
+    <div id="todo" class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-xl-5">
+            <div class="card rounded-3 text-black">
+                <div class="card-body p-md-5 mx-md-4">
+
+                    <div class="text-center">
+                        <h3 class="display-6 mb-3 pb-1">Eliminar obra</h3>
+                        <form method="POST">
+                            {% csrf_token %}
+                            <h2 class="text-bg-secondary p-3 m-3">{{ object.nombre }}</h2>
+                            
+                            {% if messages %}
+                                <div class="alert alert-primary" role="alert">
+                                    {% for message in messages %}
+                                        {{ message }}
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                <h5>¿Estas seguro/a?</h5>
+                                <input class="btn btn-outline-danger" type="submit" value="Eliminar">   
+                            {% endif %}
+                            
+                            <a class="btn btn-secondary btn-me" href="{% url 'Obras' %}">Volver</a>
+                        </form>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock main %}
+
+
