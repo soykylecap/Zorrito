@@ -9,7 +9,7 @@ from AppZorro.models import CajaPesos, Rubros, CajaDolares, Obra, Tarea
 from django.urls import reverse_lazy
 from django.db.models import Sum, RestrictedError
 from dolar import DolarBlue
-from main import EnObra
+from main import EnObra, TotalesCaja, DatosYTotalesCaja
 from AppZorro.graficos import grafico_torta, survey
 
 
@@ -28,32 +28,15 @@ class InicioListView(ListView):
         total_registros = CajaPesos.objects.count()
         context.clear()
 
+        
+
+
+
         context['dolar_compra'] = DolarBlue.compra()
         context['dolar_venta'] = DolarBlue.venta()
         context['total_registros'] = total_registros
 
         return context
-
-
-class SumasYSaldo:
-    def __init__(self, modelo):
-        self.modelo = modelo
-        # self.orden = orden
-        # self.filtro = filtro
-        # self.campos = campos
-        # self.cantidad = cantidad
-
-    def get(self):
-        
-        #.values('fecha', 'detalle', 'egreso', 'ingreso')
-        egresos = self.modelo.objects.all().aggregate(Sum('egreso'))
-        ingresos = self.modelo.objects.all().aggregate(Sum('ingreso'))
-        sumas_saldo = dict()
-        sumas_saldo['datos'] = self.modelo.objects.order_by('-fecha').filter(obra=EnObra.get())[:5]
-        sumas_saldo['egresos'] = egresos['egreso__sum']
-        sumas_saldo['ingresos'] = ingresos['ingreso__sum']
-        sumas_saldo['saldos'] = ingresos['ingreso__sum'] - egresos['egreso__sum']
-        return sumas_saldo
 
 
 
@@ -62,13 +45,17 @@ class InicioTemplateView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['obra'] =  Obra.objects.get(id=EnObra.get())
 
-        pesos = SumasYSaldo(CajaPesos)
-        dolares = SumasYSaldo(CajaDolares)
+        pesos = DatosYTotalesCaja(CajaPesos, orden='-fecha', campos=('fecha', 'detalle', 'ingreso', 'egreso'), cantidad=5)
+        dolares = DatosYTotalesCaja(CajaDolares, orden='-fecha', campos=('fecha', 'detalle', 'ingreso', 'egreso'), cantidad=5)
+        
         context['pesos'] = pesos.get()
         context['dolares'] = dolares.get()
 
+
+        context['obra'] =  Obra.objects.get(id=EnObra.get())
+        context['tareas'] = Tarea.objects.order_by('-fecha').filter(obra=EnObra.get())[:5]
+        #context['rubros'] = Rubros.objects.order_by('-fecha').filter(obra=EnObra.get())[:5]
 
         return context
 
@@ -95,11 +82,8 @@ class MovimientosListView(LoginRequiredMixin, ListView):
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        suma_egreso = CajaPesos.objects.all().aggregate(Sum('egreso'))
-        suma_ingreso = CajaPesos.objects.all().aggregate(Sum('ingreso'))
-        context['saldo_final'] = suma_ingreso['ingreso__sum'] - suma_egreso['egreso__sum']
-        context['suma_egreso'] = suma_egreso['egreso__sum']
-        context['suma_ingreso'] = suma_ingreso['ingreso__sum']
+        totales = TotalesCaja(CajaPesos)
+        context['totales'] = totales.get()
         context['dolar_compra'] = DolarBlue.compra()
         context['dolar_venta'] = DolarBlue.venta()
         return context
@@ -188,18 +172,17 @@ class RubrosListView(LoginRequiredMixin, ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        ingresos = CajaPesos.objects.aggregate(Sum('ingreso'))
-        egresos = CajaPesos.objects.aggregate(Sum('egreso'))
-        context['ingresos'] = ingresos['ingreso__sum']
-        context['egresos'] = egresos['egreso__sum']
-        context['saldo'] = ingresos['ingreso__sum'] - egresos['egreso__sum']
+
+        pesos = TotalesCaja(CajaPesos)
+        context['pesos'] = pesos.get()
+        
 
         queryset = context['object_list']
 
         labels = list()
         sizes = []
         for rubro in queryset:
-            suma_egreso= CajaPesos.objects.filter(rubro_id=rubro).aggregate(Sum('egreso'))
+            suma_egreso = CajaPesos.objects.filter(rubro_id=rubro).aggregate(Sum('egreso'))
             suma_egreso_valor = suma_egreso.get('egreso__sum', 0)
             rubro.suma_egreso = float(suma_egreso_valor) if suma_egreso_valor else 0
             if rubro.suma_egreso and rubro.id != 23:
@@ -247,11 +230,8 @@ class DolaresListView(LoginRequiredMixin, ListView):
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        suma_egreso = CajaDolares.objects.all().aggregate(Sum('egreso'))
-        suma_ingreso = CajaDolares.objects.all().aggregate(Sum('ingreso'))
-        context['saldo_final'] = suma_ingreso['ingreso__sum'] - suma_egreso['egreso__sum']
-        context['suma_egreso'] = suma_egreso['egreso__sum']
-        context['suma_ingreso'] = suma_ingreso['ingreso__sum']
+        totales = TotalesCaja(CajaDolares)
+        context['totales'] = totales.get()
         context['dolar_compra'] = DolarBlue.compra()
         context['dolar_venta'] = DolarBlue.venta()
         return context

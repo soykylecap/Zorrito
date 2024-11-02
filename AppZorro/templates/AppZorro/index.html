@@ -98,16 +98,46 @@
                         <th scope="col"></th>
                         <th scope="col">Saldo</th>
                         <th scope="col"></th>
-                        <th scope="col">$ {{ dolares.saldos }}</th>
+                        <th scope="col">$ {{ dolares.saldo }}</th>
                     </tr>
                 </table>
             </div>
 
         </div>
-        <div class="col-5 border rounded-3">
+        <div class="col-5 border rounded-3 p-2">
             <div class="card border rounded-3">
-                Tareas> ultimos Mov y nuevo
-
+                <div class="row">
+                    <div class="col-8">
+                        <a href="{% url 'Tareas' %}" class="btn btn-dark mb-2">Tareas  |  Ver todo</a>
+                    </div>
+                    <div class="col-4 text-end">
+                        <a href="{% url 'CrearTarea' %}" class="btn btn-dark mb-2">Nueva Tarea</a>
+                    </div>
+                </div>
+                <table class="text-center table table-striped table-bordered table-sm">
+                    <thead class="thead-primary">
+                        <tr class="text-bg-dark p-3">
+                            <th scope="col">Fecha</th>
+                            <th scope="col">Detalle</th>
+                            <th scope="col">Area</th>
+                            <th scope="col">% Jornada</th>
+                            <th scope="col">Operarios</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for tarea in tareas %}
+                            <tr>  
+                                <td>{{ tarea.fecha|date:"d/m/Y" }}</td>
+                                <td>{{ tarea.tarea }}</td>
+                                <td>{{ tarea.rubro }} </td>
+                                <td>{{ tarea.porcentaje }} </td> 
+                                <td>{{ tarea.cant_operarios }} </td> 
+                            </tr>
+                        {% empty %}
+                            <tr><th><h6>Todavia no arrancamos</h6></th></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
             </div>
             <div class="card border rounded-3">
                 top 5 rubros + Grafico + nuevo
